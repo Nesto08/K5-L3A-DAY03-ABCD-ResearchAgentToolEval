@@ -74,7 +74,7 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 
 ## B2. Failure Analysis
 
-Nguồn: [v0 base OpenRouter](../runs/v0_B_base_openrouter_20261110T101940383734.json), model `openai/gpt-4o-mini`, artifact `v0+peb1c8179815b+t5b22a2476d41`. Kết quả: **14/20 PASS (70%), 6 FAIL, 0 lỗi provider**. [CSV bằng chứng](../analysis/v0_openrouter_failures.csv) giữ lại kỳ vọng, lời gọi thực tế, `failure_type`, `observed_mismatch` và toàn bộ `result.failures` của 6 case.
+Use actual failures from `results[*].result.failures`.
 
 | Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
 |---|---|---|---|---|
