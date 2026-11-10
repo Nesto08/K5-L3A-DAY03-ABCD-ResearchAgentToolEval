@@ -175,6 +175,23 @@ python scripts/preflight_provider.py --provider openrouter
 
 If preflight fails, fix provider key, dependency, or network before running eval.
 
+### Dùng Groq thay cho OpenAI/OpenRouter
+
+Thêm `GROQ_API_KEY` vào `starter_v0/.env`. Model mặc định là
+`openai/gpt-oss-20b`; có thể đổi bằng `GROQ_MODEL` trong `.env` hoặc `--model`.
+Groq dùng SDK đã có trong `requirements.txt`, không cần cài thêm package.
+Chạy từ `starter_v0/`:
+
+```bash
+python scripts/preflight_provider.py --provider groq
+python run_eval.py --provider groq --version v0 --suite base --eval-cases data/eval_base.json
+python chat.py --provider groq --version v0
+```
+
+Khi làm theo các bước bên dưới, thay `--provider openrouter` bằng `--provider groq`.
+Key Tavily/Firecrawl/RapidAPI vẫn cấu hình riêng theo tool đang dùng.
+Chi tiết: [TOOL-SETUP.md](TOOL-SETUP.md).
+
 ## Step 1 — Run Baseline
 
 Run the fixed base eval as `v0`:

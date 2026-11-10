@@ -21,6 +21,7 @@ Alternatives:
 OPENAI_API_KEY=...
 ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
+GROQ_API_KEY=...
 ```
 
 Preflight:
@@ -29,6 +30,21 @@ Preflight:
 cd starter_v0
 python scripts/preflight_provider.py --provider openrouter
 ```
+
+Groq (uses the existing OpenAI SDK with Groq's endpoint, no extra dependency):
+
+```bash
+# Set GROQ_API_KEY in starter_v0/.env first.
+# Optional: GROQ_MODEL=openai/gpt-oss-20b (the default).
+python scripts/preflight_provider.py --provider groq
+python run_eval.py --provider groq --version v0 --suite base --eval-cases data/eval_base.json
+python chat.py --provider groq --version v0
+```
+
+Use `--model` to override `GROQ_MODEL` for one run. Preflight checks structured
+tool calling; research tools still need their own API keys below.
+See [Groq API compatibility](https://console.groq.com/docs/openai) and
+[the default model](https://console.groq.com/docs/model/openai/gpt-oss-20b).
 
 Local model (bonus Small Local Model Challenge, không cần API key):
 
