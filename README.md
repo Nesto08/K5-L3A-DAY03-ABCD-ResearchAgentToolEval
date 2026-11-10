@@ -43,28 +43,28 @@ Bonus:
 Đánh dấu khi xong. Mỗi dòng trỏ tới file cần sửa và bằng chứng cần nộp.
 
 **Setup**
-- [ ] `.env` có provider key + `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `RAPIDAPI_KEY`
-- [ ] `python scripts/preflight_provider.py --provider openrouter` pass
-- [ ] `pytest` chạy được: contract test + example test xanh, TODO test đang `skipped`
+- [x] `.env` có provider key + `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `RAPIDAPI_KEY`
+- [x] `python scripts/preflight_provider.py --provider openrouter` pass
+- [x] `pytest` chạy được: contract test + example test xanh, TODO test đang `skipped`
 
 **Prompt & tool declaration**
-- [ ] Chạy baseline `v0`, ghi vào `artifacts/version_log.csv`
+- [x] Chạy baseline `v0`, ghi vào `artifacts/version_log.csv`
 - [ ] Liệt kê các case FAIL của `v0` và gán mỗi case một loại lỗi (`wrong_tool`, `wrong_arg_value`, `missing_info`...)
-- [ ] `artifacts/system_prompt.md`: bỏ các chỉ dẫn xấu cố ý của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước)
-- [ ] `artifacts/system_prompt.md`: thêm rule routing (khi nào `timeline` / `social_search` / `lookup` / `fetch` / `clarify`)
-- [ ] `artifacts/tools.yaml`: viết lại `description` mỗi tool: làm gì, **khi nào dùng / khi nào không dùng**
-- [ ] `artifacts/tools.yaml`: mô tả rõ convention args (handle không có `@`, `topic=news` cho tin tức, `timeframe`, `search_type=Top|Latest`)
-- [ ] `artifacts/tools.yaml`: `send` mô tả rõ chỉ gửi khi user đã xác nhận (`confirmed=true`)
+- [x] `artifacts/system_prompt.md`: bỏ các chỉ dẫn xấu cố ý của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước)
+- [x] `artifacts/system_prompt.md`: thêm rule routing (khi nào `timeline` / `social_search` / `lookup` / `fetch` / `clarify`)
+- [x] `artifacts/tools.yaml`: viết lại `description` mỗi tool: làm gì, **khi nào dùng / khi nào không dùng**
+- [x] `artifacts/tools.yaml`: mô tả rõ convention args (handle không có `@`, `topic=news` cho tin tức, `timeframe`, `search_type=Top|Latest`)
+- [x] `artifacts/tools.yaml`: `send` mô tả rõ chỉ gửi khi user đã xác nhận (`confirmed=true`)
 - [ ] `v1`, `v2`, `v3`: mỗi version **một** giả thuyết, metric trước/sau trong `version_log.csv`
 
 **Tool mới**
-- [ ] `tools/<tên>/tool.py` + `TOOL.md` (frontmatter đúng contract trong `tools/README.md`)
-- [ ] Đăng ký trong `tools/__init__.py` (`TOOL_FUNCTIONS`) và `artifacts/tools.yaml`
-- [ ] Unit test cho tool mới trong `tests/test_tools_todo.py` (≥ 3 test)
-- [ ] Ít nhất 1 eval case trong `data/eval_group.json` kiểm tra model có route tới tool mới đúng lúc
+- [x] `tools/<tên>/tool.py` + `TOOL.md` (frontmatter đúng contract trong `tools/README.md`)
+- [x] Đăng ký trong `tools/__init__.py` (`TOOL_FUNCTIONS`) và `artifacts/tools.yaml`
+- [x] Unit test cho tool mới trong `tests/test_tools_todo.py` (≥ 3 test)
+- [x] Ít nhất 1 eval case trong `data/eval_group.json` kiểm tra model có route tới tool mới đúng lúc
 
 **Testing**
-- [ ] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
+- [x] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
 - [ ] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
 - [ ] `pytest`: 0 failed, 0 skipped
 
@@ -174,6 +174,36 @@ python scripts/preflight_provider.py --provider openrouter
 ```
 
 If preflight fails, fix provider key, dependency, or network before running eval.
+
+### Dùng Groq thay cho OpenAI/OpenRouter
+
+Thêm `GROQ_API_KEY` vào `starter_v0/.env`. Model mặc định là
+`openai/gpt-oss-20b`; có thể đổi bằng `GROQ_MODEL` trong `.env` hoặc `--model`.
+Groq dùng SDK đã có trong `requirements.txt`, không cần cài thêm package.
+Chạy từ `starter_v0/`:
+
+```bash
+python scripts/preflight_provider.py --provider groq
+python run_eval.py --provider groq --version v0 --suite base --eval-cases data/eval_base.json
+python chat.py --provider groq --version v0
+```
+
+Khi làm theo các bước bên dưới, thay `--provider openrouter` bằng `--provider groq`.
+Key Tavily/Firecrawl/RapidAPI vẫn cấu hình riêng theo tool đang dùng.
+Chi tiết: [TOOL-SETUP.md](TOOL-SETUP.md).
+
+### Mỗi người một key: `--provider auto`
+
+Mỗi thành viên chỉ cần điền key mình có (Gemini, OpenAI, OpenRouter, Anthropic, Groq) vào `starter_v0/.env`.
+`auto` chỉ dùng provider có key và đã cài SDK, thử theo thứ tự `gemini → openai → openrouter → anthropic → groq → ollama`.
+Provider đầu lỗi hoặc hết quota thì chuyển sang provider sau. Đổi thứ tự bằng `LAB_PROVIDER_ORDER` trong `.env`.
+
+```bash
+python scripts/preflight_provider.py --provider auto   # in ra provider thật sự đã trả lời
+python chat.py --provider auto --version v1
+```
+
+Chạy eval thì nên chọn một provider cố định: `auto` có thể đổi model giữa các case, khi đó điểm không còn so sánh được giữa các version.
 
 ## Step 1 — Run Baseline
 
@@ -317,8 +347,11 @@ Try at least 3 live turns, for example:
 1. Chạy UI local trước (ví dụ Streamlit mặc định cổng `8501`):
 
    ```bash
-   streamlit run app.py            # → http://localhost:8501
+   # Trong starter_v0/, bằng Python của venv (không gọi `streamlit` trên PATH, có thể là venv khác)
+   python -m streamlit run app.py   # → http://localhost:8501
    ```
+
+   Sidebar chỉ liệt kê provider có key trong `.env`. Mục *Provider chưa dùng được* ghi rõ thiếu key hay thiếu package. Dưới mỗi câu trả lời có ghi provider và model đã trả lời.
 
 2. Cài `cloudflared`:
 

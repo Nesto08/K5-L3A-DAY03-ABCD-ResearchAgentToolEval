@@ -6,3 +6,6 @@ __pycache__/
 .env.*
 !.env.example
 arxiv_papers/
+# Hồ sơ người dùng thật (dữ liệu cá nhân). Chỉ commit file mẫu profile.example.json.
+user_profile/*
+!user_profile/profile.example.json

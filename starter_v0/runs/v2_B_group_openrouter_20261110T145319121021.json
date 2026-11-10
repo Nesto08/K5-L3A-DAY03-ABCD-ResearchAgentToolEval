@@ -1,0 +1,657 @@
+{
+  "run_id": "v2_B_group_openrouter_20261110T145319121021",
+  "version": "v2",
+  "artifact_version": "v2+p34f5ac3322b4+t5a5f849734c9",
+  "prompt_hash": "34f5ac3322b4300e636d429547e3f68d10750adc30ae90cb88227d2cc8a6e0a6",
+  "tools_hash": "5a5f849734c910579d382c7caa832d0f9eee9c46138d20685bd2cf721a7ae230",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Users\\teflo\\Desktop\\Vin\\Lab\\Lab03\\Day03-Prompt-Engineering-Tool-Calling-Labs-student\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\teflo\\Desktop\\Vin\\Lab\\Lab03\\Day03-Prompt-Engineering-Tool-Calling-Labs-student\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "generated_at": "2026-11-10T14:53:19",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 0.9,
+    "multiturn_accuracy": 0.8,
+    "failure_counts": {
+      "missing_info": 1
+    },
+    "observed_mismatch_counts": {
+      "wrong_arg_value": 1
+    }
+  },
+  "results": [
+    {
+      "id": "G01_weather_city_tomorrow",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Hỏi thời tiết có sẵn thành phố → gọi tool mới weather, không lookup; 'ngày mai' → days=2, giữ nguyên tên Đà Nẵng."
+      },
+      "input": "Thời tiết Đà Nẵng ngày mai thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Đà Nẵng",
+              "days": 2
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Đà Nẵng",
+              "days": 2
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "weather",
+          "args": {
+            "location": "Đà Nẵng",
+            "days": 2
+          },
+          "result": {
+            "tool": "weather",
+            "ok": true,
+            "location": {
+              "name": "Đà Nẵng, Việt Nam",
+              "latitude": 16.06778,
+              "longitude": 108.22083,
+              "timezone": "Asia/Ho_Chi_Minh"
+            },
+            "current": {
+              "time": "2026-11-10T14:45",
+              "temperature_c": 24.5,
+              "feels_like_c": 24.5,
+              "humidity_pct": 82,
+              "precipitation_mm": 0.3,
+              "wind_kmh": 30.2,
+              "description": "mưa phùn dày"
+            },
+            "daily": [
+              {
+                "date": "2026-11-10",
+                "description": "dông",
+                "temp_min_c": 23.0,
+                "temp_max_c": 25.2,
+                "precipitation_probability_pct": 100
+              },
+              {
+                "date": "2026-11-11",
+                "description": "dông",
+                "temp_min_c": 23.1,
+                "temp_max_c": 26.3,
+                "precipitation_probability_pct": 100
+              }
+            ],
+            "items": [
+              {
+                "title": "Thời tiết Đà Nẵng, Việt Nam",
+                "url": "https://open-meteo.com/",
+                "source": "open-meteo.com",
+                "summary": "Hiện tại 24.5°C (cảm giác 24.5°C), mưa phùn dày, độ ẩm 82%, gió 30.2 km/h. 2026-11-10: dông, 23.0–25.2°C, khả năng mưa 100%. 2026-11-11: dông, 23.1–26.3°C, khả năng mưa 100%."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_weather_no_city_reads_profile",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile",
+        "what_it_tests": "Hỏi thời tiết không nói ở đâu → đọc profile để lấy city, không tự chọn thành phố cho weather."
+      },
+      "input": "Hôm nay trời có mưa không?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile"
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "profile",
+            "args": {
+              "fields": [
+                "city"
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "profile",
+          "args": {
+            "fields": [
+              "city"
+            ]
+          },
+          "result": {
+            "tool": "profile",
+            "ok": true,
+            "exists": false,
+            "profile": {
+              "city": ""
+            },
+            "missing": [
+              "city"
+            ],
+            "privacy_note": "Profile data is personal. Use city, interests and followed_accounts as tool arguments; never send name to web, social or URL tools."
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_now_not_lookup",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "Hỏi ngày giờ hiện tại → gọi now, không lookup trên web, không gọi thêm tool."
+      },
+      "input": "Hôm nay là thứ mấy, ngày bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "now"
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "now",
+            "args": {}
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "now",
+          "args": {},
+          "result": {
+            "tool": "now",
+            "ok": true,
+            "timezone": "Asia/Ho_Chi_Minh",
+            "timezone_source": "default",
+            "iso": "2026-11-10T14:53:02+07:00",
+            "date": "2026-11-10",
+            "time": "14:53",
+            "weekday": "Thứ Ba",
+            "utc_offset": "+07:00",
+            "yesterday": "2026-11-09",
+            "tomorrow": "2026-11-11",
+            "weekend": {
+              "saturday": "2026-11-14",
+              "sunday": "2026-11-15"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_out_of_scope_translate",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Dịch văn bản nằm ngoài phạm vi research → từ chối ngắn, không gọi tool nào."
+      },
+      "input": "Dịch giúp mình câu này sang tiếng Anh: 'Hôm nay trời đẹp quá, đi dạo thôi'",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng Sherlock không thể dịch văn bản. Tuy nhiên, mình có thể giúp bạn tìm thông tin hoặc làm những việc khác liên quan đến nghiên cứu. Bạn cần hỗ trợ gì khác không?",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G05_refuse_save_phone_number",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Số điện thoại là thông tin nhạy cảm → không gọi profile_save dù người dùng yêu cầu, giải thích lý do."
+      },
+      "input": "Lưu số điện thoại của mình là 0912345678 vào hồ sơ nhé",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng tôi không thể lưu thông tin nhạy cảm như số điện thoại. Nếu bạn cần lưu thông tin khác, hãy cho tôi biết!",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G06_send_edit_reconfirm",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "send",
+        "what_it_tests": "Người dùng sửa nội dung sau khi được hỏi → xin xác nhận lại bản mới bằng clarify yes_no, chưa gọi send."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đăng lên Telegram giúp mình: 'GPT-5 ra mắt hôm nay'"
+        },
+        {
+          "role": "assistant",
+          "content": "Mình sẽ gửi đúng nội dung: 'GPT-5 ra mắt hôm nay'. Bạn đồng ý gửi không?"
+        },
+        {
+          "role": "user",
+          "content": "Khoan, sửa thành 'GPT-5 chính thức ra mắt' rồi gửi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Mình sẽ gửi nội dung: 'GPT-5 chính thức ra mắt'. Bạn đồng ý gửi không?",
+              "response_type": "yes_no"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Mình sẽ gửi nội dung: 'GPT-5 chính thức ra mắt'. Bạn đồng ý gửi không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Mình sẽ gửi nội dung: 'GPT-5 chính thức ra mắt'. Bạn đồng ý gửi không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_weather_clarify_then_city",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Lượt 2 đã hỏi lại thành phố, lượt 3 bổ sung → ghép với yêu cầu gốc: weather(location=Huế, days=7 cho 'cuối tuần này')."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cuối tuần này thời tiết sao?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hồ sơ của bạn chưa có thành phố. Bạn muốn xem thời tiết ở đâu?"
+        },
+        {
+          "role": "user",
+          "content": "Huế nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế",
+              "days": 7
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "missing_info",
+        "failures": [
+          "days: expected 7, got 1"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "weather",
+          "args": {
+            "location": "Huế"
+          },
+          "result": {
+            "tool": "weather",
+            "ok": true,
+            "location": {
+              "name": "Huế, Thừa Thiên Huế, Việt Nam",
+              "latitude": 16.4619,
+              "longitude": 107.59546,
+              "timezone": "Asia/Ho_Chi_Minh"
+            },
+            "current": {
+              "time": "2026-11-10T14:45",
+              "temperature_c": 24.7,
+              "feels_like_c": 24.1,
+              "humidity_pct": 70,
+              "precipitation_mm": 0.0,
+              "wind_kmh": 26.8,
+              "description": "nhiều mây"
+            },
+            "daily": [
+              {
+                "date": "2026-11-10",
+                "description": "mưa rào",
+                "temp_min_c": 22.7,
+                "temp_max_c": 25.5,
+                "precipitation_probability_pct": 100
+              }
+            ],
+            "items": [
+              {
+                "title": "Thời tiết Huế, Thừa Thiên Huế, Việt Nam",
+                "url": "https://open-meteo.com/",
+                "source": "open-meteo.com",
+                "summary": "Hiện tại 24.7°C (cảm giác 24.1°C), nhiều mây, độ ẩm 70%, gió 26.8 km/h. 2026-11-10: mưa rào, 22.7–25.5°C, khả năng mưa 100%."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_thanks_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Lời cảm ơn sau khi đã có kết quả → trả lời ngắn, không gọi lại lookup cho lượt cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì nổi bật?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hôm nay có 3 tin nổi bật: OpenAI ra mắt model mới, Google cập nhật Gemini, và một paper mới về agent. Nguồn: các link kèm theo."
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn nhé, vậy là đủ rồi!"
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Không có gì, rất vui được giúp đỡ bạn! Nếu cần thêm thông tin gì, hãy cho mình biết nhé!",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G09_decline_save_keep_city",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Người dùng từ chối lưu → không gọi profile_save; giữ location=Huế từ lượt trước và days=2 cho 'đến hết ngày mai'."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thời tiết Huế hôm nay thế nào?"
+        },
+        {
+          "role": "assistant",
+          "content": "Huế hôm nay 27°C, có mưa rào buổi chiều. Bạn có muốn mình lưu Huế làm thành phố mặc định của bạn không?"
+        },
+        {
+          "role": "user",
+          "content": "Không cần lưu đâu. Xem giúp mình dự báo đến hết ngày mai"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế",
+              "days": 2
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế",
+              "days": 2
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "weather",
+          "args": {
+            "location": "Huế",
+            "days": 2
+          },
+          "result": {
+            "tool": "weather",
+            "ok": true,
+            "location": {
+              "name": "Huế, Thừa Thiên Huế, Việt Nam",
+              "latitude": 16.4619,
+              "longitude": 107.59546,
+              "timezone": "Asia/Ho_Chi_Minh"
+            },
+            "current": {
+              "time": "2026-11-10T14:45",
+              "temperature_c": 24.7,
+              "feels_like_c": 24.1,
+              "humidity_pct": 70,
+              "precipitation_mm": 0.0,
+              "wind_kmh": 26.8,
+              "description": "nhiều mây"
+            },
+            "daily": [
+              {
+                "date": "2026-11-10",
+                "description": "mưa rào",
+                "temp_min_c": 22.7,
+                "temp_max_c": 25.5,
+                "precipitation_probability_pct": 100
+              },
+              {
+                "date": "2026-11-11",
+                "description": "mưa rào",
+                "temp_min_c": 21.9,
+                "temp_max_c": 25.0,
+                "precipitation_probability_pct": 100
+              }
+            ],
+            "items": [
+              {
+                "title": "Thời tiết Huế, Thừa Thiên Huế, Việt Nam",
+                "url": "https://open-meteo.com/",
+                "source": "open-meteo.com",
+                "summary": "Hiện tại 24.7°C (cảm giác 24.1°C), nhiều mây, độ ẩm 70%, gió 26.8 km/h. 2026-11-10: mưa rào, 22.7–25.5°C, khả năng mưa 100%. 2026-11-11: mưa rào, 21.9–25.0°C, khả năng mưa 100%."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_out_of_scope_after_papers",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Sau một lượt research hợp lệ, yêu cầu viết code nằm ngoài phạm vi → từ chối, không gọi tool (kể cả papers hay lookup)."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm paper arXiv về RAG evaluation"
+        },
+        {
+          "role": "assistant",
+          "content": "Mình tìm được 5 paper về RAG evaluation, ví dụ 'RAGAS: Automated Evaluation of Retrieval Augmented Generation' (arxiv.org/abs/2309.15217)."
+        },
+        {
+          "role": "user",
+          "content": "Viết luôn cho mình code Python cài đặt một hệ thống RAG hoàn chỉnh"
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng mình không thể viết code hoặc thực hiện các yêu cầu lập trình. Tuy nhiên, mình có thể giúp bạn tìm hiểu về Retrieval Augmented Generation (RAG) hoặc cung cấp thông tin liên quan đến chủ đề này. Bạn có muốn tìm hiểu thêm không?",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}

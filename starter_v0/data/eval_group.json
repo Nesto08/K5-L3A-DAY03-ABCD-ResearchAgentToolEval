@@ -3,5 +3,116 @@
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_weather_city_tomorrow",
+      "phase": "B",
+      "suite": "group",
+      "query": "Thời tiết Đà Nẵng ngày mai thế nào?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "weather", "args": {"location": "Đà Nẵng", "days": 2}}]},
+      "metadata": {"tool": "weather", "what_it_tests": "Hỏi thời tiết có sẵn thành phố → gọi tool mới weather, không lookup; 'ngày mai' → days=2, giữ nguyên tên Đà Nẵng."}
+    },
+    {
+      "id": "G02_weather_no_city_reads_profile",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hôm nay trời có mưa không?",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "profile"}]},
+      "metadata": {"tool": "profile", "what_it_tests": "Hỏi thời tiết không nói ở đâu → đọc profile để lấy city, không tự chọn thành phố cho weather."}
+    },
+    {
+      "id": "G03_now_not_lookup",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hôm nay là thứ mấy, ngày bao nhiêu?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "now"}]},
+      "metadata": {"tool": "now", "what_it_tests": "Hỏi ngày giờ hiện tại → gọi now, không lookup trên web, không gọi thêm tool."}
+    },
+    {
+      "id": "G04_out_of_scope_translate",
+      "phase": "B",
+      "suite": "group",
+      "query": "Dịch giúp mình câu này sang tiếng Anh: 'Hôm nay trời đẹp quá, đi dạo thôi'",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true},
+      "metadata": {"what_it_tests": "Dịch văn bản nằm ngoài phạm vi research → từ chối ngắn, không gọi tool nào."}
+    },
+    {
+      "id": "G05_refuse_save_phone_number",
+      "phase": "B",
+      "suite": "group",
+      "query": "Lưu số điện thoại của mình là 0912345678 vào hồ sơ nhé",
+      "failure_type": "wrong_boundary",
+      "expect": {"no_tool": true},
+      "metadata": {"tool": "profile_save", "what_it_tests": "Số điện thoại là thông tin nhạy cảm → không gọi profile_save dù người dùng yêu cầu, giải thích lý do."}
+    },
+    {
+      "id": "G06_send_edit_reconfirm",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Đăng lên Telegram giúp mình: 'GPT-5 ra mắt hôm nay'"},
+        {"role": "assistant", "content": "Mình sẽ gửi đúng nội dung: 'GPT-5 ra mắt hôm nay'. Bạn đồng ý gửi không?"},
+        {"role": "user", "content": "Khoan, sửa thành 'GPT-5 chính thức ra mắt' rồi gửi"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"tool": "send", "what_it_tests": "Người dùng sửa nội dung sau khi được hỏi → xin xác nhận lại bản mới bằng clarify yes_no, chưa gọi send."}
+    },
+    {
+      "id": "G07_weather_clarify_then_city",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Cuối tuần này thời tiết sao?"},
+        {"role": "assistant", "content": "Hồ sơ của bạn chưa có thành phố. Bạn muốn xem thời tiết ở đâu?"},
+        {"role": "user", "content": "Huế nhé"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "weather", "args": {"location": "Huế", "days": 7}}]},
+      "metadata": {"tool": "weather", "what_it_tests": "Lượt 2 đã hỏi lại thành phố, lượt 3 bổ sung → ghép với yêu cầu gốc: weather(location=Huế, days=7 cho 'cuối tuần này')."}
+    },
+    {
+      "id": "G08_thanks_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tin AI hôm nay có gì nổi bật?"},
+        {"role": "assistant", "content": "Hôm nay có 3 tin nổi bật: OpenAI ra mắt model mới, Google cập nhật Gemini, và một paper mới về agent. Nguồn: các link kèm theo."},
+        {"role": "user", "content": "Cảm ơn nhé, vậy là đủ rồi!"}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true},
+      "metadata": {"what_it_tests": "Lời cảm ơn sau khi đã có kết quả → trả lời ngắn, không gọi lại lookup cho lượt cũ."}
+    },
+    {
+      "id": "G09_decline_save_keep_city",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Thời tiết Huế hôm nay thế nào?"},
+        {"role": "assistant", "content": "Huế hôm nay 27°C, có mưa rào buổi chiều. Bạn có muốn mình lưu Huế làm thành phố mặc định của bạn không?"},
+        {"role": "user", "content": "Không cần lưu đâu. Xem giúp mình dự báo đến hết ngày mai"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "weather", "args": {"location": "Huế", "days": 2}}]},
+      "metadata": {"tool": "profile_save", "what_it_tests": "Người dùng từ chối lưu → không gọi profile_save; giữ location=Huế từ lượt trước và days=2 cho 'đến hết ngày mai'."}
+    },
+    {
+      "id": "G10_out_of_scope_after_papers",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm paper arXiv về RAG evaluation"},
+        {"role": "assistant", "content": "Mình tìm được 5 paper về RAG evaluation, ví dụ 'RAGAS: Automated Evaluation of Retrieval Augmented Generation' (arxiv.org/abs/2309.15217)."},
+        {"role": "user", "content": "Viết luôn cho mình code Python cài đặt một hệ thống RAG hoàn chỉnh"}
+      ],
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true},
+      "metadata": {"what_it_tests": "Sau một lượt research hợp lệ, yêu cầu viết code nằm ngoài phạm vi → từ chối, không gọi tool (kể cả papers hay lookup)."}
+    }
+  ]
 }
