@@ -170,3 +170,65 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang đầu cần đọc. '2 trang đầu' thì 2. Không nói thì 5."}
         max_chars: {type: integer, default: 8000, description: "Giới hạn số ký tự trả về, từ 1000 đến 20000. Không nói thì 8000."}
       required: [arxiv_url]
+
+  # ---- Team tools ----
+  - name: profile
+    description: >-
+      Đọc hồ sơ người dùng đã lưu: tên gọi, thành phố, múi giờ, ngôn ngữ, chủ đề quan tâm, tài khoản
+      X hay theo dõi. Trả về cả danh sách trường còn trống (missing).
+      DÙNG KHI: yêu cầu phụ thuộc thông tin cá nhân mà câu chưa nói: "thời tiết hôm nay" (không nói ở
+      đâu), "tin liên quan đến mình", "tin ở chỗ mình", "các tài khoản mình theo dõi đăng gì"; hoặc câu
+      chung chung thiếu chủ đề ("có gì mới không?") để lấy chủ đề quan tâm làm lựa chọn cho clarify.
+      KHÔNG DÙNG KHI: câu đã đủ đối tượng ("tin AI hôm nay", "thời tiết Đà Nẵng", "tweet của Sam
+      Altman"); đã đọc hồ sơ trước đó trong hội thoại. Hồ sơ thiếu trường cần dùng thì gọi clarify,
+      không đoán. Không gửi name ra tool web hay mạng xã hội.
+    parameters:
+      type: object
+      properties:
+        fields: {type: array, default: [], items: {type: string, enum: [name, city, timezone, language, interests, followed_accounts]}, description: "Các trường cần đọc, ví dụ ['city'] khi hỏi thời tiết. Để rỗng để đọc tất cả."}
+
+  - name: profile_save
+    description: >-
+      Lưu hoặc sửa MỘT trường trong hồ sơ người dùng (ghi file cục bộ, dùng cho các lượt sau).
+      DÙNG KHI: người dùng tự nói rõ muốn lưu ("nhớ giúp mình là mình ở Huế", "thêm bóng đá vào chủ đề
+      quan tâm", "xóa thành phố của mình") thì gọi với confirmed=true. Nếu người dùng chỉ nhắc thông
+      tin cá nhân khi đang hỏi việc khác thì làm việc đó trước; muốn lưu thì hỏi clarify với
+      response_type="yes_no", chỉ gọi khi họ đồng ý.
+      KHÔNG DÙNG KHI: người dùng chưa đồng ý lưu; thông tin nhạy cảm (họ tên đầy đủ, địa chỉ nhà, số
+      điện thoại, email, sức khỏe, tài chính): không lưu và nói lý do. Đọc hồ sơ thì dùng profile.
+    parameters:
+      type: object
+      properties:
+        field: {type: string, enum: [name, city, timezone, language, interests, followed_accounts], description: "name: tên gọi hoặc biệt danh. city: tên thành phố, không ghi địa chỉ chi tiết. timezone: tên IANA như Asia/Ho_Chi_Minh. language: mã như vi, en. interests: chủ đề quan tâm. followed_accounts: handle X không có @."}
+        value: {type: string, default: "", description: "Giá trị cần lưu, ví dụ 'Huế'. Với interests và followed_accounts có thể ghi nhiều giá trị cách nhau bằng dấu phẩy. Để rỗng cùng action=set để xóa trường."}
+        action: {type: string, enum: [set, add, remove], default: "set", description: "set: thay toàn bộ giá trị. add, remove: thêm hoặc bớt phần tử, chỉ dùng cho interests và followed_accounts."}
+        confirmed: {type: boolean, default: false, description: "true khi người dùng đã tự yêu cầu lưu, hoặc vừa đồng ý lưu đúng giá trị này. Còn lại false; khi đó tool không ghi và trả về needs_confirmation."}
+      required: [field, value]
+
+  - name: weather
+    description: >-
+      Thời tiết hiện tại và dự báo 1–7 ngày cho MỘT địa điểm: nhiệt độ, cảm giác như, độ ẩm, gió,
+      khả năng mưa.
+      DÙNG KHI: người dùng hỏi thời tiết, nhiệt độ, trời có mưa không, có cần mang áo mưa không, và đã
+      biết địa điểm (người dùng nói trong câu, hoặc lấy city từ profile).
+      KHÔNG DÙNG KHI: chưa biết địa điểm: gọi profile (nếu chưa đọc) hoặc clarify, không tự chọn thành
+      phố; tin tức về bão lũ, thiên tai (dùng lookup với topic=news).
+    parameters:
+      type: object
+      properties:
+        location: {type: string, default: "", description: "Tên thành phố hoặc địa danh, giữ nguyên như người dùng nói, có dấu hay không đều được, ví dụ 'Hà Nội', 'Đà Nẵng', 'Tokyo'. Chỉ ghi tên thành phố, không ghi địa chỉ nhà."}
+        days: {type: integer, default: 1, description: "Số ngày dự báo tính cả hôm nay, từ 1 đến 7. 'hôm nay' thì 1; 'ngày mai' thì 2; 'cuối tuần', 'tuần này' thì 7. Không nói thì 1."}
+      required: [location]
+
+  - name: now
+    description: >-
+      Ngày giờ hiện tại theo múi giờ người dùng (lấy từ hồ sơ, mặc định Asia/Ho_Chi_Minh), kèm thứ,
+      ngày hôm qua, ngày mai và ngày cuối tuần.
+      DÙNG KHI: người dùng hỏi hôm nay ngày mấy, thứ mấy, mấy giờ, giờ ở nơi khác; hoặc cần ngày cụ thể
+      cho câu trả lời (ghi ngày lên tiêu đề bản tin, hiểu "ngày mai", "cuối tuần").
+      KHÔNG DÙNG KHI: chỉ cần chọn timeframe cho lookup ("hôm nay" là timeframe=day, không cần gọi now);
+      hỏi về lịch sử hay sự kiện (dùng lookup).
+    parameters:
+      type: object
+      properties:
+        timezone: {type: string, default: "", description: "Tên múi giờ IANA, ví dụ 'Asia/Tokyo', 'Europe/London'. Chỉ điền khi người dùng hỏi giờ ở nơi khác; để rỗng để dùng múi giờ của người dùng."}

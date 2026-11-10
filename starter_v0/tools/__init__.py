@@ -18,6 +18,12 @@ from .social_search.tool import search_tweets
 from .send.tool import send_telegram
 from .lookup.tool import web_search
 
+# Team tools (personalization)
+from .now.tool import get_current_time
+from .profile.tool import get_user_profile
+from .profile_save.tool import save_user_profile
+from .weather.tool import get_weather
+
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
 # names the model sees AND the names data/eval_base.json + data/eval_research_extension.json
@@ -35,8 +41,11 @@ TOOL_FUNCTIONS = {
     "policy": search_company_policy,
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
-    # TODO(student): register your new tool here, e.g. "my_tool": my_tool_function,
-    # then declare it in artifacts/tools.yaml and run `pytest tests/test_tool_contract.py`.
+    # ---- Team tools ----
+    "profile": get_user_profile,
+    "profile_save": save_user_profile,
+    "weather": get_weather,
+    "now": get_current_time,
 }
 
 

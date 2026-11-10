@@ -1,0 +1,8 @@
+{
+  "name": "Minh",
+  "city": "Hà Nội",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "language": "vi",
+  "interests": ["AI", "robotics"],
+  "followed_accounts": ["karpathy", "sama"]
+}
