@@ -43,15 +43,15 @@ Bonus:
 Đánh dấu khi xong. Mỗi dòng trỏ tới file cần sửa và bằng chứng cần nộp.
 
 **Setup**
-- [ ] `.env` có provider key + `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `RAPIDAPI_KEY`
-- [ ] `python scripts/preflight_provider.py --provider openrouter` pass
-- [ ] `pytest` chạy được: contract test + example test xanh, TODO test đang `skipped`
+- [ x ] `.env` có provider key + `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `RAPIDAPI_KEY`
+- [ x ] `python scripts/preflight_provider.py --provider openrouter` pass
+- [x] `pytest` chạy được: contract test + example test xanh, TODO test đang `skipped`
 
 **Prompt & tool declaration**
-- [ ] Chạy baseline `v0`, ghi vào `artifacts/version_log.csv`
+- [ x ] Chạy baseline `v0`, ghi vào `artifacts/version_log.csv`
 - [ ] Liệt kê các case FAIL của `v0` và gán mỗi case một loại lỗi (`wrong_tool`, `wrong_arg_value`, `missing_info`...)
-- [ ] `artifacts/system_prompt.md`: bỏ các chỉ dẫn xấu cố ý của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước)
-- [ ] `artifacts/system_prompt.md`: thêm rule routing (khi nào `timeline` / `social_search` / `lookup` / `fetch` / `clarify`)
+- [x] `artifacts/system_prompt.md`: bỏ các chỉ dẫn xấu cố ý của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước)
+- [x] `artifacts/system_prompt.md`: thêm rule routing (khi nào `timeline` / `social_search` / `lookup` / `fetch` / `clarify`)
 - [ ] `artifacts/tools.yaml`: viết lại `description` mỗi tool: làm gì, **khi nào dùng / khi nào không dùng**
 - [ ] `artifacts/tools.yaml`: mô tả rõ convention args (handle không có `@`, `topic=news` cho tin tức, `timeframe`, `search_type=Top|Latest`)
 - [ ] `artifacts/tools.yaml`: `send` mô tả rõ chỉ gửi khi user đã xác nhận (`confirmed=true`)

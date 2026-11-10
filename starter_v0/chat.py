@@ -150,8 +150,8 @@ def write_transcript(path: Path, transcript: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Interactive Research Agent chat with transcript logging.")
-    parser.add_argument("--provider", choices=["openrouter", "openai", "anthropic", "gemini", "ollama", "groq"], required=True)
+    parser = argparse.ArgumentParser(description="Interactive Sherlock chat with transcript logging.")
+    parser.add_argument("--provider", choices=["openrouter", "openai", "anthropic", "gemini", "gemini-openai", "ollama", "groq"], required=True)
     parser.add_argument("--model", default=None)
     parser.add_argument("--version", required=True, help="Student-chosen artifact version label, e.g. v0, v1, v2.")
     parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt.md")
@@ -189,7 +189,7 @@ def main() -> None:
         "turns": [],
     }
 
-    print(f"Research Agent chat. artifact_version={artifact_version.artifact_version}")
+    print(f"Sherlock chat. artifact_version={artifact_version.artifact_version}")
     print("Type /exit to stop.")
 
     history: list[dict[str, str]] = []
@@ -233,7 +233,7 @@ def main() -> None:
             )
             turn_record.update(result)
             assistant_text = result["assistant_text"]
-            print(f"\nAgent> {assistant_text}")
+            print(f"\nSherlock> {assistant_text}")
             history.append({"role": "user", "content": user_text})
             history.append({"role": "assistant", "content": assistant_text})
         except Exception as exc:
