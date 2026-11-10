@@ -65,8 +65,8 @@ Bonus:
 
 **Testing**
 - [x] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
-- [ ] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
-- [ ] `pytest`: 0 failed, 0 skipped
+- [x] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
+- [x] `pytest`: 0 failed, 0 skipped
 
 **Demo & report**
 - [ ] UI chạy được + link dùng thử
