@@ -1,0 +1,1813 @@
+{
+  "run_id": "v2-team-tools-r2_B_team_tools_groq_20261110T162134960081",
+  "version": "v2-team-tools-r2",
+  "artifact_version": "v2-team-tools-r2+p188a75dcfc31+t8f6cd2099a65",
+  "prompt_hash": "188a75dcfc315d244aeb71b156a84c1112d64145066dc2d7c4ad2bbef2feb1d7",
+  "tools_hash": "8f6cd2099a65de8d21d1955f33caa5683f851c41c4d405ddb8bfcff3906e8702",
+  "phase": "B",
+  "suite": "team_tools",
+  "provider": "groq",
+  "model": "openai/gpt-oss-20b",
+  "system_prompt": "D:\\AI_ThucChien\\Lab3\\K5-L3A-DAY03-ABCD-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI_ThucChien\\Lab3\\K5-L3A-DAY03-ABCD-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "D:\\AI_ThucChien\\Lab3\\K5-L3A-DAY03-ABCD-ResearchAgentToolEval\\starter_v0\\data\\eval_team_tools.json",
+  "dataset_id": "sherlock_team_tools_20_v1",
+  "dataset_role": "team_tools",
+  "description": "20 prompt cho 4 tool nhóm: mỗi tool 5 case; tổng 10 single turn và 10 multi turn. Chạy bằng scripts/run_team_tools_eval.py để cô lập hồ sơ và kiểm tra trạng thái sau khi lưu. Không thay thế eval_group.json.",
+  "generated_at": "2026-11-10T16:21:34",
+  "profile_isolation": "Fresh temporary profile per case; real profile is never used.",
+  "execution_allowlist": [
+    "clarify",
+    "now",
+    "profile",
+    "profile_save",
+    "weather"
+  ],
+  "summary": {
+    "total_cases": 20,
+    "measured_cases": 0,
+    "provider_error_cases": 20,
+    "passed_cases": 0,
+    "case_accuracy": 0.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {},
+    "profile_state_measured_cases": 0,
+    "profile_state_accuracy": null,
+    "tool_execution_error_cases": 0,
+    "fully_passed_cases": 0,
+    "full_accuracy": 0.0
+  },
+  "results": [
+    {
+      "id": "TT_W01_current_explicit_city",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Địa điểm và thời gian đầy đủ: gọi weather trực tiếp, không profile, lookup hay profile_save."
+      },
+      "input": "Thời tiết Hà Nội hôm nay thế nào? Chỉ xem hôm nay, không cần lưu vào hồ sơ.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Hà Nội",
+              "days": 1
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_W02_seven_day_horizon",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Giữ tên thành phố có dấu và truyền đúng giới hạn dự báo 7 ngày."
+      },
+      "input": "Cho mình dự báo thời tiết Đà Nẵng trong 7 ngày tính từ hôm nay.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Đà Nẵng",
+              "days": 7
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_W03_missing_city_reads_profile_first",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Chưa biết city trong ngữ cảnh: đọc profile trước; không tự đoán location hoặc gọi weather khi chưa đọc kết quả."
+      },
+      "input": "Hôm nay chỗ mình có mưa không? Mình chưa nói địa điểm trong cuộc trò chuyện này.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile"
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_W04_clarify_carries_weekend",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "weather",
+        "profile_fixture": {},
+        "related_case": "G07_weather_clarify_then_city",
+        "what_it_tests": "Sau clarify, ghép city mới với khoảng thời gian cũ; theo tools.yaml, cuối tuần ánh xạ days=7. Không sửa G07 để né lỗi."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cuối tuần này thời tiết có thuận lợi để đi chơi không?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hồ sơ chưa có thành phố. Bạn muốn xem thời tiết ở đâu?"
+        },
+        {
+          "role": "user",
+          "content": "Cần Thơ nhé, vẫn là yêu cầu dự báo cuối tuần vừa rồi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Cần Thơ",
+              "days": 7
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "",
+          "city": "",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        },
+        "expected_after": {
+          "name": "",
+          "city": "",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        },
+        "after": {
+          "name": "",
+          "city": "",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        }
+      }
+    },
+    {
+      "id": "TT_W05_correct_city_keep_days",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "weather",
+        "what_it_tests": "Lấy city được sửa ở lượt cuối, giữ days=3 từ yêu cầu gốc và không tự ghi profile."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem thời tiết Tokyo trong 3 ngày tính từ hôm nay."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn xem dự báo Tokyo trong 3 ngày."
+        },
+        {
+          "role": "user",
+          "content": "À đổi sang Huế nhé, vẫn 3 ngày; không lưu thay đổi này vào hồ sơ."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế",
+              "days": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_N01_default_timezone",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "now tự đọc múi giờ từ hồ sơ; model không cần gọi profile hoặc lookup riêng. timezone bị bỏ qua được tính theo default của schema."
+      },
+      "input": "Bây giờ là mấy giờ và hôm nay là thứ mấy? Dùng múi giờ mặc định của mình.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "now",
+            "args": {
+              "timezone": ""
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_N02_explicit_timezone",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "Múi giờ được chỉ định thắng múi giờ mặc định; không bịa thời gian và không tìm trên web."
+      },
+      "input": "Bây giờ ở Tokyo là mấy giờ? Dùng múi giờ Asia/Tokyo.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "now",
+            "args": {
+              "timezone": "Asia/Tokyo"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_N03_carry_timezone",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "Đại từ 'ở đó' giữ múi giờ từ lượt trước, không quay về timezone của profile."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mình đang quan tâm giờ Berlin, múi giờ Europe/Berlin."
+        },
+        {
+          "role": "assistant",
+          "content": "Mình sẽ dùng Europe/Berlin cho câu hỏi về giờ ở Berlin."
+        },
+        {
+          "role": "user",
+          "content": "Vậy hiện tại ở đó đang là ngày nào, thứ mấy?"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "now",
+            "args": {
+              "timezone": "Europe/Berlin"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_N04_correct_timezone",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "Ưu tiên múi giờ sửa ở lượt cuối; không gọi lại cho Paris và không lưu timezone."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem giúp mình giờ hiện tại theo Europe/Paris."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn đang muốn xem giờ Paris."
+        },
+        {
+          "role": "user",
+          "content": "Không, đổi thành Asia/Singapore. Chỉ xem giờ hiện tại ở Singapore thôi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "now",
+            "args": {
+              "timezone": "Asia/Singapore"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_N05_thanks_stops_clock_calls",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "now",
+        "what_it_tests": "Lời cảm ơn kết thúc yêu cầu; không chạy lại now cho lượt cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Hôm nay thứ mấy?"
+        },
+        {
+          "role": "assistant",
+          "content": "Mình đã kiểm tra ngày giờ và trả lời câu hỏi của bạn."
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn nhé, không cần kiểm tra thêm nữa."
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_P01_read_city_only",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile",
+        "what_it_tests": "Đọc đúng trường city, không weather hoặc profile_save; kết quả chỉ cần phần hồ sơ được yêu cầu."
+      },
+      "input": "Đọc giúp mình thành phố mặc định đã lưu trong hồ sơ. Chỉ đọc trường city, không xem thời tiết.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile",
+            "args": {
+              "fields": [
+                "city"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_P02_read_interest_and_accounts",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile",
+        "what_it_tests": "Chọn đúng hai trường danh sách, không đọc name hay gọi công cụ tìm kiếm trước khi có yêu cầu."
+      },
+      "input": "Trong hồ sơ mình đã lưu chủ đề quan tâm và tài khoản X theo dõi nào? Chỉ đọc interests và followed_accounts, chưa tìm tin hay tweet.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile",
+            "args": {
+              "fields": [
+                "interests",
+                "followed_accounts"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_P03_explicit_city_does_not_read_profile",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile",
+        "what_it_tests": "Có đủ địa điểm nên không cần đọc profile. City trong fixture khác Tokyo để phát hiện việc dùng sai mặc định."
+      },
+      "input": "Thời tiết Tokyo hôm nay thế nào? Dùng Tokyo mình vừa chỉ định, không dùng thành phố mặc định trong hồ sơ.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Tokyo",
+              "days": 1
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_P04_switch_to_read_interests",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile",
+        "what_it_tests": "Chuyển sang đọc hồ sơ ở lượt mới nhất, không chạy lại weather và không tìm tin theo interests."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem thời tiết Đà Nẵng hôm nay."
+        },
+        {
+          "role": "assistant",
+          "content": "Mình đã trả lời yêu cầu thời tiết Đà Nẵng."
+        },
+        {
+          "role": "user",
+          "content": "Bỏ phần thời tiết nhé. Giờ chỉ đọc trường interests trong hồ sơ cho mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile",
+            "args": {
+              "fields": [
+                "interests"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_P05_reuse_city_already_read",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile",
+        "profile_fixture": {
+          "city": "Huế"
+        },
+        "what_it_tests": "Tái sử dụng city đã đọc trong ngữ cảnh, không gọi lại profile và giữ days=2 cho đến hết ngày mai."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đọc thành phố mặc định đã lưu của mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Kết quả profile: city của bạn là Huế."
+        },
+        {
+          "role": "user",
+          "content": "Xem thời tiết ở thành phố đó đến hết ngày mai; không lưu gì thêm."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "weather",
+            "args": {
+              "location": "Huế",
+              "days": 2
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "",
+          "city": "Huế",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        },
+        "expected_after": {
+          "name": "",
+          "city": "Huế",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        },
+        "after": {
+          "name": "",
+          "city": "Huế",
+          "timezone": "",
+          "language": "",
+          "interests": [],
+          "followed_accounts": []
+        }
+      }
+    },
+    {
+      "id": "TT_S01_explicit_save_city",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Người dùng chủ động yêu cầu lưu: ghi city với confirmed=true. Kiểm tra file tạm thực sự thay đổi đúng trường và giữ các trường khác."
+      },
+      "input": "Lưu Huế làm thành phố mặc định trong hồ sơ của mình nhé. Mình muốn lưu ngay, không cần xem thời tiết.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile_save",
+            "args": {
+              "field": "city",
+              "value": "Huế",
+              "action": "set",
+              "confirmed": true
+            }
+          }
+        ],
+        "profile_updates": {
+          "city": "Huế"
+        }
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Huế",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_S02_reject_sensitive_phone",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": false,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Số điện thoại giả dùng cho eval: không gọi profile_save cho dữ liệu ngoài trường cho phép; hồ sơ không đổi."
+      },
+      "input": "Lưu số điện thoại 0900000000 vào hồ sơ giúp mình nhé.",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_S03_confirm_timezone_save",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Lưu đúng timezone sau lời đồng ý rõ ràng, không hỏi xác nhận lặp và không gọi now khi chỉ yêu cầu lưu."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mình thường xem giờ Tokyo."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có muốn mình lưu Asia/Tokyo làm múi giờ mặc định không?"
+        },
+        {
+          "role": "user",
+          "content": "Có, lưu đúng Asia/Tokyo vào hồ sơ giúp mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile_save",
+            "args": {
+              "field": "timezone",
+              "value": "Asia/Tokyo",
+              "action": "set",
+              "confirmed": true
+            }
+          }
+        ],
+        "profile_updates": {
+          "timezone": "Asia/Tokyo"
+        }
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Tokyo",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_S04_confirm_add_interest",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Phân biệt add với set, giữ danh sách cũ; kiểm tra trạng thái sau ghi trong hồ sơ tạm."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Hồ sơ mình đã quan tâm AI và robotics. Mình còn thích astronomy nữa."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có muốn thêm astronomy vào danh sách interests đang có AI và robotics không?"
+        },
+        {
+          "role": "user",
+          "content": "Đồng ý, thêm astronomy vào interests; giữ nguyên AI và robotics."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "profile_save",
+            "args": {
+              "field": "interests",
+              "value": "astronomy",
+              "action": "add",
+              "confirmed": true
+            }
+          }
+        ],
+        "profile_updates": {
+          "interests": [
+            "AI",
+            "robotics",
+            "astronomy"
+          ]
+        }
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics",
+            "astronomy"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TT_S05_decline_save",
+      "phase": "B",
+      "suite": "team_tools",
+      "case_suite": "team_tools",
+      "is_multiturn": true,
+      "metadata": {
+        "tool": "profile_save",
+        "what_it_tests": "Từ chối lưu phải dừng, không hỏi lặp hoặc gọi profile_save, và file hồ sơ giữ nguyên."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mình đang ở Huế."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có muốn lưu Huế làm thành phố mặc định trong hồ sơ không?"
+        },
+        {
+          "role": "user",
+          "content": "Không, đừng lưu thông tin đó."
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "failures": [
+          "PermissionDeniedError: Error code: 403 - Forbidden"
+        ],
+        "profile_state_correct": null,
+        "execution_correct": null,
+        "fully_passed": false
+      },
+      "tool_results": [],
+      "profile_state": {
+        "before": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "expected_after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        },
+        "after": {
+          "name": "Eval",
+          "city": "Hà Nội",
+          "timezone": "Asia/Ho_Chi_Minh",
+          "language": "vi",
+          "interests": [
+            "AI",
+            "robotics"
+          ],
+          "followed_accounts": [
+            "karpathy",
+            "sama"
+          ]
+        }
+      }
+    }
+  ]
+}

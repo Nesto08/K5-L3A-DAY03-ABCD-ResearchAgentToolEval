@@ -65,8 +65,8 @@ Bonus:
 
 **Testing**
 - [x] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
-- [ ] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
-- [ ] `pytest`: 0 failed, 0 skipped
+- [x] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
+- [x] `pytest`: 0 failed, 0 skipped — 186 passed; [bằng chứng Step 4b](starter_v0/analysis/tool_unit_tests/README.md)
 
 **Demo & report**
 - [ ] UI chạy được + link dùng thử
@@ -301,6 +301,18 @@ python run_eval.py \
   --version v3 \
   --suite extension \
   --eval-cases data/eval_research_extension.json
+```
+
+### Suite bổ sung: 20 prompt cho 4 tool mới của nhóm
+
+Ngoài 10 case nhóm hiện có, `data/eval_team_tools.json` chứa **5 case/tool** cho
+`weather`, `now`, `profile`, `profile_save`: tổng 20 case (10 single turn, 10 multi turn).
+Số lượng này là yêu cầu bổ sung của nhóm, không phải yêu cầu riêng cho mỗi tool trong đề lab.
+
+Chạy bằng runner có hồ sơ tạm riêng từng case, để các case lưu hồ sơ không sửa dữ liệu thật:
+
+```bash
+python scripts/run_team_tools_eval.py --provider openrouter --model openai/gpt-4o-mini --version v2-team-tools-r1
 ```
 
 ## Step 4b — Challenge: Viết test cho tool

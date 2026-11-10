@@ -1,0 +1,3 @@
+﻿run_file,version,provider,model,measured_cases,provider_error_cases,routing_accuracy,notes
+runs/v2-team-tools-r1_B_team_tools_openrouter_20261110T161617349492.json,v2-team-tools-r1,openrouter,openai/gpt-4o-mini,0,20,,PermissionDeniedError: Error code: 403 - This model is not available in your region.
+runs/v2-team-tools-r2_B_team_tools_groq_20261110T162134960081.json,v2-team-tools-r2,groq,openai/gpt-oss-20b,0,20,,PermissionDeniedError: Error code: 403 - Forbidden

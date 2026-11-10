@@ -1,0 +1,33 @@
+{
+  "dataset": "data/eval_team_tools.json",
+  "dataset_sha256": "732eb57105152a402543f27450113a1a7759fe14dad738b519f016859a3e695f",
+  "cases": 20,
+  "single_turn": 10,
+  "multi_turn": 10,
+  "cases_per_tool": {
+    "weather": 5,
+    "now": 5,
+    "profile": 5,
+    "profile_save": 5
+  },
+  "protected_artifact_hashes": {
+    "data/eval_base.json": "9cd22a8225b18720f7b42c53c2c9b500b6fe2aaefe72472f26b552dc00d9c2e4",
+    "data/eval_group.json": "4a6ba5eb205d56c4c813171802e754b1c1120b5fc9c9bd6e9f5a471ea093297f",
+    "artifacts/system_prompt.md": "188a75dcfc315d244aeb71b156a84c1112d64145066dc2d7c4ad2bbef2feb1d7",
+    "artifacts/tools.yaml": "8f6cd2099a65de8d21d1955f33caa5683f851c41c4d405ddb8bfcff3906e8702"
+  },
+  "runs": [
+    "runs/v2-team-tools-r1_B_team_tools_openrouter_20261110T161617349492.json",
+    "runs/v2-team-tools-r2_B_team_tools_groq_20261110T162134960081.json"
+  ],
+  "live_status": "Blocked by provider HTTP 403 on both OpenRouter and Groq; no model-quality accuracy is available.",
+  "profile_isolation": "Fresh synthetic profile per case; no personal profile contents used.",
+  "scope": "Extra suite requested by the team; original 10 group cases retained.",
+  "offline_tests": {
+    "passed": 156,
+    "skipped": 17,
+    "failed": 0,
+    "new_runner_tests_passed": 8
+  },
+  "credential_scan": "No configured API key/token found in new suite, runner or artifacts."
+}

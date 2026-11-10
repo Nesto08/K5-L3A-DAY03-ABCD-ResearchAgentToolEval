@@ -88,6 +88,21 @@ List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn)
 |---|---|---|---|
 |  |  |  |  |
 
+### B3 bổ sung — Eval 4 tool nhóm
+
+Ngoài bộ group 10 case, nhóm yêu cầu thêm **20 prompt: 5 case cho mỗi tool `weather`, `now`, `profile`, `profile_save`**. Suite bổ sung gồm 10 single turn và 10 multi turn, không thay đổi các case trong `data/eval_group.json`.
+
+| Tool | Single turn | Multi turn | Tổng |
+|---|---:|---:|---:|
+| weather | 3 | 2 | 5 |
+| now | 2 | 3 | 5 |
+| profile | 3 | 2 | 5 |
+| profile_save | 2 | 3 | 5 |
+
+Case và expected behavior: [`data/eval_team_tools.json`](../data/eval_team_tools.json). Ma trận, cách chạy và giới hạn: [hướng dẫn suite](../data/README_team_tools.md). Runner tạo hồ sơ giả riêng từng case và kiểm tra dữ liệu sau lưu; không ghi hồ sơ thật.
+
+Hai lần chạy live đã được giữ log: OpenRouter / gpt-4o-mini bị 403 “model not available in your region”; Groq / gpt-oss-20b bị 403 “Forbidden”. Cả hai có `measured_cases=0`, vì vậy **chưa có điểm chất lượng model cho bộ này**. Xem [log, CSV và trạng thái](../analysis/team_tools_eval/README.md). Cần chạy lại khi provider/model có quyền truy cập.
+
 ## B4. Live Chat Evidence
 
 Use `transcripts/*.transcript.json`.
@@ -105,9 +120,13 @@ Only fill if your team did bonus.
 | send (Telegram) |  |  |  |
 | arXiv/company policy |  |  |  |
 | UI |  |  |  |
-| Tool unit tests (`tests/`) | `pytest` output |  |  |
+| Tool unit tests (`tests/`) | [pytest output](../analysis/tool_unit_tests/full_suite.txt), [JUnit](../analysis/tool_unit_tests/pytest.xml) | 186 passed, 0 failed, 0 skipped; riêng test_tools_todo.py có 30 case PASS | Mock toàn bộ HTTP, dùng key giả và hồ sơ tạm |
 
-Tool unit tests: số test đã viết, số bug tìm được trong tool có sẵn (nếu có), và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
+Đã thay toàn bộ 17 stub TODO bằng test thật; parametrization và các case bổ sung tạo thành 30 case trong `tests/test_tools_todo.py`. Bao phủ clarify, format, send, lookup, fetch, timeline, social_search, policy; kiểm tra request gửi đi và kết quả trả về với API giả. Ba stub tool mới được thay bằng test tích hợp lưu timezone rồi đọc profile/now, từ chối timezone sai mà giữ dữ liệu cũ, và lỗi ghi file không làm mất hồ sơ đang có. Các unit test riêng của 4 tool nhóm vẫn được giữ.
+
+Tìm được **1 bug** trong tool có sẵn `send`: guard `if not confirmed` coi chuỗi `"false"`, `"true"`, `"yes"` và số `1` là xác nhận hợp lệ, nên tạo request POST. Regression test tái hiện **4 failed, 26 passed** trước sửa; đã đổi thành chỉ chấp nhận boolean `True`, đúng schema. Sau sửa: **30/30 case PASS**, toàn suite **186/186 PASS**. Tất cả request Telegram trong test đều là mock; không gửi tin thật. Xem [bằng chứng trước/sau](../analysis/tool_unit_tests/README.md).
+
+Đây là lỗi unit test bắt được nhưng eval routing/args không đảm bảo bắt được: eval chỉ so những arguments được kỳ vọng, còn guard thực thi phải từ chối các giá trị sai kiểu dù chúng truthy trong Python.
 
 ## B6. Reflection
 
