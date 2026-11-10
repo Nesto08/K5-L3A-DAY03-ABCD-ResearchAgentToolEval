@@ -18,9 +18,9 @@
 
 **Sherlock** là agent hỗ trợ research và tìm kiếm thông tin: tìm tin trên web, xem tweet theo tài khoản hoặc theo chủ đề, đọc và tóm tắt URL, tìm và đọc paper arXiv, tra policy nội bộ công ty. Sherlock tổng hợp kết quả thành bản tin có nguồn và chỉ gửi lên Telegram khi người dùng đã xác nhận. Ngoài ra Sherlock xem được thời tiết, ngày giờ, và nhớ hồ sơ người dùng (thành phố, chủ đề quan tâm) để cá nhân hóa câu trả lời.
 
-**Link dùng thử (deploy):**
+**Link dùng thử (deploy):** [https://appointed-horizontal-bufing-delivery.trycloudflare.com](https://appointed-horizontal-bufing-delivery.trycloudflare.com)
 
-> URL: <!-- TODO: dán link trycloudflare.com khi chạy tunnel -->
+> Link tạm từ Cloudflare quick tunnel, chỉ mở được khi UI và tunnel trên máy nhóm đang chạy. Chạy lại tunnel thì link đổi; link mới sẽ được cập nhật ở đây.
 
 ## A2. Tool agent có
 
