@@ -17,6 +17,9 @@ starter/
 # Tool scratch output
 arxiv_papers/
 
+# Lịch sử chat local của UI (app.py)
+research_agent.db
+
 # OS / editor
 .DS_Store
 Thumbs.db
