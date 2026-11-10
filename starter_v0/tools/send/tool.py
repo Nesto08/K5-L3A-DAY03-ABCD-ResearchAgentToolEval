@@ -9,7 +9,8 @@ from tools._shared import TIMEOUT, err
 
 
 def send_telegram(text: str = "", confirmed: bool = False) -> dict[str, Any]:
-    if not confirmed:
+    # The tool schema requires a boolean: strings such as "false" are truthy.
+    if confirmed is not True:
         return {
             "tool": "send_telegram",
             "status": "needs_confirmation",
