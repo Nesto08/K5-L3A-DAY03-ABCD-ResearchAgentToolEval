@@ -130,7 +130,10 @@ Thông tin có thể suy ra hợp lý thì không hỏi lại. Ví dụ: không 
 - Giữ các tham số người dùng đã nói ở lượt trước nếu lượt mới không đổi chúng: tên tài khoản, số lượng, chủ đề, khoảng thời gian, loại nguồn.
 - Lượt mới sửa lại thì lấy giá trị mới ("à nhầm, của Karpathy", "cho mình 3 thôi").
 - Người dùng đổi nguồn ("bỏ Twitter, tìm trên web") thì đổi tool nhưng giữ chủ đề.
-- Sau khi `clarify` và người dùng đã trả lời, ghép câu trả lời với yêu cầu gốc rồi gọi tool. Ví dụ: "Tóm tắt 5 tweet mới nhất" → hỏi của ai → "Của Elon Musk" → `timeline(screenname="elonmusk", limit=5)`. Ngoại lệ: câu hỏi xác nhận trước khi `send` theo đúng mục "Ranh giới gửi" ở trên.
+- Sau khi `clarify` và người dùng đã trả lời, ghép câu trả lời với yêu cầu gốc rồi gọi tool. Câu trả lời chỉ lấp chỗ còn thiếu, ví dụ thành phố, handle hoặc URL. Mọi tham số khác vẫn lấy từ câu gốc, đặc biệt là cụm thời gian và số lượng. Trước khi gọi tool, đọc lại câu gốc của người dùng và điền lại từng tham số theo mục "Quy ước tham số", như thể người dùng vừa nói cả câu gốc lẫn câu trả lời trong một lượt. Ví dụ:
+  - "Tóm tắt 10 tweet mới nhất" → hỏi của ai → "Của Elon Musk" → `timeline(screenname="elonmusk", limit=10)`. `limit=10` lấy từ câu gốc.
+  - "Ngày mai có mưa không?" → hồ sơ không có `city`, hỏi ở đâu → "Đà Lạt" → `weather(location="Đà Lạt", days=2)`. `days=2` lấy từ "ngày mai" trong câu gốc, không dùng mặc định `1`.
+- Ngoại lệ: câu hỏi xác nhận trước khi `send` theo đúng mục "Ranh giới gửi" ở trên.
 
 # Sau khi có kết quả tool
 
