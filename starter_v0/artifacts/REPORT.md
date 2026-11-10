@@ -88,6 +88,21 @@ List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn)
 |---|---|---|---|
 |  |  |  |  |
 
+### B3 bổ sung — Eval 4 tool nhóm
+
+Ngoài bộ group 10 case, nhóm yêu cầu thêm **20 prompt: 5 case cho mỗi tool `weather`, `now`, `profile`, `profile_save`**. Suite bổ sung gồm 10 single turn và 10 multi turn, không thay đổi các case trong `data/eval_group.json`.
+
+| Tool | Single turn | Multi turn | Tổng |
+|---|---:|---:|---:|
+| weather | 3 | 2 | 5 |
+| now | 2 | 3 | 5 |
+| profile | 3 | 2 | 5 |
+| profile_save | 2 | 3 | 5 |
+
+Case và expected behavior: [`data/eval_team_tools.json`](../data/eval_team_tools.json). Ma trận, cách chạy và giới hạn: [hướng dẫn suite](../data/README_team_tools.md). Runner tạo hồ sơ giả riêng từng case và kiểm tra dữ liệu sau lưu; không ghi hồ sơ thật.
+
+Hai lần chạy live đã được giữ log: OpenRouter / gpt-4o-mini bị 403 “model not available in your region”; Groq / gpt-oss-20b bị 403 “Forbidden”. Cả hai có `measured_cases=0`, vì vậy **chưa có điểm chất lượng model cho bộ này**. Xem [log, CSV và trạng thái](../analysis/team_tools_eval/README.md). Cần chạy lại khi provider/model có quyền truy cập.
+
 ## B4. Live Chat Evidence
 
 Use `transcripts/*.transcript.json`.

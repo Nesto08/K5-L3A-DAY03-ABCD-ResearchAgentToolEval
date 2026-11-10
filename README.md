@@ -303,6 +303,18 @@ python run_eval.py \
   --eval-cases data/eval_research_extension.json
 ```
 
+### Suite bổ sung: 20 prompt cho 4 tool mới của nhóm
+
+Ngoài 10 case nhóm hiện có, `data/eval_team_tools.json` chứa **5 case/tool** cho
+`weather`, `now`, `profile`, `profile_save`: tổng 20 case (10 single turn, 10 multi turn).
+Số lượng này là yêu cầu bổ sung của nhóm, không phải yêu cầu riêng cho mỗi tool trong đề lab.
+
+Chạy bằng runner có hồ sơ tạm riêng từng case, để các case lưu hồ sơ không sửa dữ liệu thật:
+
+```bash
+python scripts/run_team_tools_eval.py --provider openrouter --model openai/gpt-4o-mini --version v2-team-tools-r1
+```
+
 ## Step 4b — Challenge: Viết test cho tool
 
 Eval ở Step 4 đo **model** (chọn tool và args có đúng không). Unit test ở đây đo **code của tool** (nhận args đó thì có chạy đúng không). Hai loại lỗi này khác nhau: model gọi đúng `lookup(topic="news")` nhưng tool quên gửi `topic` lên API thì eval vẫn báo PASS, còn user vẫn nhận kết quả sai.
