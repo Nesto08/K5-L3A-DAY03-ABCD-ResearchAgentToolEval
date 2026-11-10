@@ -41,7 +41,7 @@ Không sửa prompt, tool declaration hay expected answer để né lỗi truy c
 
 Unit test bổ sung kiểm tra số lượng/cấu trúc case, sự nhất quán tên tool, cô lập và reset hồ sơ, guard không thực thi hành động ngoài suite, phát hiện ghi file thất bại dù routing đúng, và từ chối runner thông thường khi chưa cô lập profile.
 
-Kiểm tra cuối: **156 passed, 17 skipped, 0 failed**. Riêng file test mới có **8 test PASS**. Các 17 skipped vẫn là TODO cũ trong `tests/test_tools_todo.py`, không phải kết quả eval live. Quét artifact mới không phát hiện giá trị API key/token đang cấu hình.
+Kiểm tra tại thời điểm bàn giao suite 20 prompt: **156 passed, 17 skipped, 0 failed**, gồm **8 test PASS** của runner mới. Đây là số đo lịch sử, không phải kết quả eval live. Sau đó, phần Step 4b đã hoàn thiện TODO và sửa bug send; kết quả mới là **186 passed, 0 skipped, 0 failed**, xem [bằng chứng unit test](../tool_unit_tests/README.md). Quét artifact lúc bàn giao không phát hiện giá trị API key/token đang cấu hình.
 
 ## Chạy lại
 
