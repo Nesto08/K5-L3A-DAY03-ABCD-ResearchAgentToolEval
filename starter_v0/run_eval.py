@@ -301,6 +301,13 @@ def main() -> None:
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "runs")
     args = parser.parse_args()
 
+    dataset = json.loads(args.eval_cases.read_text(encoding="utf-8"))
+    if dataset.get("requires_isolated_profile"):
+        raise SystemExit(
+            "This suite requires isolated profiles. Run scripts/run_team_tools_eval.py "
+            "with the same --eval-cases, --provider, --model and --version instead."
+        )
+
     system_prompt = args.system_prompt.read_text(encoding="utf-8")
     artifact_version = build_artifact_version(args.version, args.system_prompt, args.tools)
     provider = make_provider(args.provider)
