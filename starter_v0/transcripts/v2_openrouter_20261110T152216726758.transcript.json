@@ -1,0 +1,220 @@
+{
+  "transcript_id": "v2_openrouter_20261110T152216726758",
+  "version": "v2",
+  "artifact_version": "v2+p34f5ac3322b4+t5a5f849734c9",
+  "prompt_hash": "34f5ac3322b4300e636d429547e3f68d10750adc30ae90cb88227d2cc8a6e0a6",
+  "tools_hash": "5a5f849734c910579d382c7caa832d0f9eee9c46138d20685bd2cf721a7ae230",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Users\\teflo\\Desktop\\Vin\\Lab\\Lab03\\Day03-Prompt-Engineering-Tool-Calling-Labs-student\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\teflo\\Desktop\\Vin\\Lab\\Lab03\\Day03-Prompt-Engineering-Tool-Calling-Labs-student\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T15:22:16",
+  "updated_at": "2026-11-10T15:22:36",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T15:22:16",
+      "user": "Tìm 3 paper arXiv mới nhất về retrieval augmented generation evaluation",
+      "status": "answered",
+      "assistant_text": "Dưới đây là 3 paper mới nhất trên arXiv liên quan đến \"retrieval augmented generation evaluation\":\n\n1. **[OptiCover: A Scalable and Multi-Surface Framework for Cold-Start Visual Optimization under Semantic Constraints](http://arxiv.org/abs/2611.12727v1)**\n   - **Tác giả**: Guillaume Guy, Mihajlo Grbovic, Joe Mills, Selen Uguroglu, Liwei He, Pratiksha Kadam, Nalini Kartha, Qian Aria Li\n   - **Tóm tắt**: Nghiên cứu này đề xuất một framework có tên OptiCover để tối ưu hóa hình ảnh trong bối cảnh thương mại điện tử, giúp cải thiện sự tương tác của người dùng với các hình ảnh sản phẩm.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12727v1)**\n\n2. **[SNAPRAG: Cost-Efficient Knowledge Extraction Attack on RAG Systems via Adversarial Perturbations](http://arxiv.org/abs/2611.12241v1)**\n   - **Tác giả**: Melih Coşğun, Mehmet Emre Gürsoy, Alptekin Küpçü, Sinem Sav\n   - **Tóm tắt**: Bài báo này giới thiệu SNAPRAG, một phương pháp tấn công hiệu quả về chi phí để trích xuất cơ sở kiến thức từ các hệ thống RAG thông qua các biến thể đối kháng.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12241v1)**\n\n3. **[StealthyPoison: Manipulating LLM Agent Behavior through Procedural Poisoning of Third-Party Skills](http://arxiv.org/abs/2611.12155v1)**\n   - **Tác giả**: Jingfen Qiao, Rui Li, Shuaiqun Pan, Olga Gadyatskaya, Andrew Yates, Evangelos Kanoulas\n   - **Tóm tắt**: Nghiên cứu này trình bày StealthyPoison, một phương pháp tấn công nhằm thao túng hành vi của các tác nhân LLM thông qua việc làm ô nhiễm quy trình của các kỹ năng bên thứ ba.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12155v1)**\n\nNếu bạn cần thêm thông tin hoặc muốn tìm kiếm thêm, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "papers",
+              "args": {
+                "query": "retrieval augmented generation evaluation",
+                "max_results": 3,
+                "sort_by": "submittedDate"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "papers",
+              "args": {
+                "query": "retrieval augmented generation evaluation",
+                "max_results": 3,
+                "sort_by": "submittedDate"
+              },
+              "result": {
+                "tool": "arxiv_search",
+                "query": "retrieval augmented generation evaluation",
+                "api_query": "all:retrieval AND all:augmented AND all:generation AND all:evaluation",
+                "total_results": 4171,
+                "items": [
+                  {
+                    "arxiv_id": "2611.12727v1",
+                    "title": "OptiCover: A Scalable and Multi-Surface Framework for Cold-Start Visual Optimization under Semantic Constraints",
+                    "summary": "Selecting an effective cover photo is a critical yet understudied problem in visual merchandising for e-commerce marketplaces. On Airbnb, hosts upload many photos depicting different rooms, amenities, and points of interest, but must manually choose a single static cover photo that is reused across heterogeneous product surfaces. This creates substantial challenges: over 90\\% of listing photos have no engagement labels, leading to a severe cold-start regime; guest preferences vary across surfaces and search intents, and visually captivating photos may be semantically misaligned with the underlying listing. At Airbnb scale, this corresponds to hundreds of millions of photos and hundreds of thousands of new uploads per day. We propose \\emph{OptiCover}, a scalable framework for cold-start visual optimization under semantic constraints and multi-surface engagement signals. The framework combines (i) a photo candidate generator that identifies candidate photos through various proxies, (ii) lightweight vision heads applied to frozen CLIP embeddings for large-scale semantic scoring, (iii) a cross-modal grounding validator based on a vision-language model (VLM) that enforces semantic representativeness, and (iv) an Exploration Logging Module (ELM) that orchestrates the collection of randomized engagement data across heterogeneous product surfaces and contextual search intents. We evaluate OptiCover through extensive offline studies and multiple online experiments across HomePage, and Search surfaces. OptiCover is now deployed in production and performs tens of millions of photo swaps daily. Online results show a 1.5\\% engagement lift on the HomePage and a 0.35\\% increase in bookers on Search, generating millions of dollars in incremental revenue. Our findings suggest that action-space shaping and semantic constraints are primary drivers of performance.",
+                    "authors": [
+                      "Guillaume Guy",
+                      "Mihajlo Grbovic",
+                      "Joe Mills",
+                      "Selen Uguroglu",
+                      "Liwei He",
+                      "Pratiksha Kadam",
+                      "Nalini Kartha",
+                      "Qian Aria Li"
+                    ],
+                    "published": "2026-11-09T17:12:09Z",
+                    "updated": "2026-11-09T17:12:09Z",
+                    "url": "http://arxiv.org/abs/2611.12727v1",
+                    "pdf_url": "https://arxiv.org/pdf/2611.12727v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.CV",
+                    "categories": [
+                      "cs.CV",
+                      "cs.LG"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2611.12241v1",
+                    "title": "SNAPRAG: Cost-Efficient Knowledge Extraction Attack on RAG Systems via Adversarial Perturbations",
+                    "summary": "Retrieval-Augmented Generation (RAG) systems improve Large Language Model (LLM) responses by incorporating information from external knowledge bases. However, recent studies have shown that attackers can extract substantial portions of private knowledge bases from RAG systems through repeated querying. Yet, state-of-the-art extraction attacks either rely heavily on external LLMs to generate adversarial queries or require a large number of queries. In this paper, we propose SNAPRAG, a novel and cost-efficient attack for extracting RAG knowledge bases through adversarial perturbations. Our approach algorithmically generates adversarial queries without relying on external LLMs and allows for a strictly configurable query budget. In particular, SNAPRAG uses a discrete token-mutation algorithm to generate novel queries in a strict black-box setting. Our adaptive dissimilarity threshold calibration systematically forces queries into unexplored semantic regions of the target database, enabling extraction with fewer queries. Specifically, to extract half of the target knowledge base, our method requires up to 6.77$\\times$ fewer queries than existing approaches. Furthermore, within a fixed query budget, our method recovers up to 96.9%, outperforming the closest approach by 7.7-19.9%. We further evaluate SNAPRAG against active defenses, where it remains the leading attack on four of five defended targets, achieving 50.7-96.3% extraction rate.",
+                    "authors": [
+                      "Melih Coşğun",
+                      "Mehmet Emre Gürsoy",
+                      "Alptekin Küpçü",
+                      "Sinem Sav"
+                    ],
+                    "published": "2026-11-09T11:30:44Z",
+                    "updated": "2026-11-09T11:30:44Z",
+                    "url": "http://arxiv.org/abs/2611.12241v1",
+                    "pdf_url": "https://arxiv.org/pdf/2611.12241v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.CR",
+                    "categories": [
+                      "cs.CR"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2611.12155v1",
+                    "title": "StealthyPoison: Manipulating LLM Agent Behavior through Procedural Poisoning of Third-Party Skills",
+                    "summary": "LLM agents increasingly retrieve third-party skills from public registries and follow their procedures to complete user tasks. This reliance allows attackers to manipulate agent behavior by poisoning the skills. However, overtly malicious instructions can provide explicit signals for detection. We present StealthyPoison, a stealthy procedural poisoning attack that corrupts a skill's decision-critical rules to induce incorrect task outcomes while preserving its advertised functionality and normal execution. Unlike prior knowledge corruption attacks that craft poisoned content for known target question-answer pairs, StealthyPoison constructs reusable poisoned procedures from a publicly available third-party skill, without access to actual user requests or their ground-truth answers. To make the poisoned procedure generalize to unseen requests, it first synthesizes requests from the target skill and executes its clean version using a surrogate agent to obtain pseudo-references. These references and surrogate execution feedback guide the iterative refinement of payloads that alter decision-critical rules. To increase the likelihood that the poisoned skill is retrieved and selected over benign alternatives, the attack augments the poisoned skill's retrieval metadata with independently generated request descriptions. We evaluate StealthyPoison on 566 eligible target skills and 5,244 requests against more than 26,000 registry entries. It improves top-1 poisoned-skill placement by 13.6% relative to both HotFlip and GCG. Constructed using feedback from a single surrogate model, the procedural poisoning payloads transfer effectively and without modification to three held-out victim models and achieve end-to-end attack success in a Claude Code workflow powered by Opus 4.8. The defense evaluation further shows that most of these payloads evade detection by both SkillSpector and GPT-5.4-mini.",
+                    "authors": [
+                      "Jingfen Qiao",
+                      "Rui Li",
+                      "Shuaiqun Pan",
+                      "Olga Gadyatskaya",
+                      "Andrew Yates",
+                      "Evangelos Kanoulas"
+                    ],
+                    "published": "2026-11-09T10:05:07Z",
+                    "updated": "2026-11-09T10:05:07Z",
+                    "url": "http://arxiv.org/abs/2611.12155v1",
+                    "pdf_url": "https://arxiv.org/pdf/2611.12155v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.CR",
+                    "categories": [
+                      "cs.CR"
+                    ]
+                  }
+                ],
+                "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Dưới đây là 3 paper mới nhất trên arXiv liên quan đến \"retrieval augmented generation evaluation\":\n\n1. **[OptiCover: A Scalable and Multi-Surface Framework for Cold-Start Visual Optimization under Semantic Constraints](http://arxiv.org/abs/2611.12727v1)**\n   - **Tác giả**: Guillaume Guy, Mihajlo Grbovic, Joe Mills, Selen Uguroglu, Liwei He, Pratiksha Kadam, Nalini Kartha, Qian Aria Li\n   - **Tóm tắt**: Nghiên cứu này đề xuất một framework có tên OptiCover để tối ưu hóa hình ảnh trong bối cảnh thương mại điện tử, giúp cải thiện sự tương tác của người dùng với các hình ảnh sản phẩm.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12727v1)**\n\n2. **[SNAPRAG: Cost-Efficient Knowledge Extraction Attack on RAG Systems via Adversarial Perturbations](http://arxiv.org/abs/2611.12241v1)**\n   - **Tác giả**: Melih Coşğun, Mehmet Emre Gürsoy, Alptekin Küpçü, Sinem Sav\n   - **Tóm tắt**: Bài báo này giới thiệu SNAPRAG, một phương pháp tấn công hiệu quả về chi phí để trích xuất cơ sở kiến thức từ các hệ thống RAG thông qua các biến thể đối kháng.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12241v1)**\n\n3. **[StealthyPoison: Manipulating LLM Agent Behavior through Procedural Poisoning of Third-Party Skills](http://arxiv.org/abs/2611.12155v1)**\n   - **Tác giả**: Jingfen Qiao, Rui Li, Shuaiqun Pan, Olga Gadyatskaya, Andrew Yates, Evangelos Kanoulas\n   - **Tóm tắt**: Nghiên cứu này trình bày StealthyPoison, một phương pháp tấn công nhằm thao túng hành vi của các tác nhân LLM thông qua việc làm ô nhiễm quy trình của các kỹ năng bên thứ ba.\n   - **Ngày xuất bản**: 09/11/2026\n   - **[PDF](https://arxiv.org/pdf/2611.12155v1)**\n\nNếu bạn cần thêm thông tin hoặc muốn tìm kiếm thêm, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "papers",
+          "args": {
+            "query": "retrieval augmented generation evaluation",
+            "max_results": 3,
+            "sort_by": "submittedDate"
+          },
+          "result": {
+            "tool": "arxiv_search",
+            "query": "retrieval augmented generation evaluation",
+            "api_query": "all:retrieval AND all:augmented AND all:generation AND all:evaluation",
+            "total_results": 4171,
+            "items": [
+              {
+                "arxiv_id": "2611.12727v1",
+                "title": "OptiCover: A Scalable and Multi-Surface Framework for Cold-Start Visual Optimization under Semantic Constraints",
+                "summary": "Selecting an effective cover photo is a critical yet understudied problem in visual merchandising for e-commerce marketplaces. On Airbnb, hosts upload many photos depicting different rooms, amenities, and points of interest, but must manually choose a single static cover photo that is reused across heterogeneous product surfaces. This creates substantial challenges: over 90\\% of listing photos have no engagement labels, leading to a severe cold-start regime; guest preferences vary across surfaces and search intents, and visually captivating photos may be semantically misaligned with the underlying listing. At Airbnb scale, this corresponds to hundreds of millions of photos and hundreds of thousands of new uploads per day. We propose \\emph{OptiCover}, a scalable framework for cold-start visual optimization under semantic constraints and multi-surface engagement signals. The framework combines (i) a photo candidate generator that identifies candidate photos through various proxies, (ii) lightweight vision heads applied to frozen CLIP embeddings for large-scale semantic scoring, (iii) a cross-modal grounding validator based on a vision-language model (VLM) that enforces semantic representativeness, and (iv) an Exploration Logging Module (ELM) that orchestrates the collection of randomized engagement data across heterogeneous product surfaces and contextual search intents. We evaluate OptiCover through extensive offline studies and multiple online experiments across HomePage, and Search surfaces. OptiCover is now deployed in production and performs tens of millions of photo swaps daily. Online results show a 1.5\\% engagement lift on the HomePage and a 0.35\\% increase in bookers on Search, generating millions of dollars in incremental revenue. Our findings suggest that action-space shaping and semantic constraints are primary drivers of performance.",
+                "authors": [
+                  "Guillaume Guy",
+                  "Mihajlo Grbovic",
+                  "Joe Mills",
+                  "Selen Uguroglu",
+                  "Liwei He",
+                  "Pratiksha Kadam",
+                  "Nalini Kartha",
+                  "Qian Aria Li"
+                ],
+                "published": "2026-11-09T17:12:09Z",
+                "updated": "2026-11-09T17:12:09Z",
+                "url": "http://arxiv.org/abs/2611.12727v1",
+                "pdf_url": "https://arxiv.org/pdf/2611.12727v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.CV",
+                "categories": [
+                  "cs.CV",
+                  "cs.LG"
+                ]
+              },
+              {
+                "arxiv_id": "2611.12241v1",
+                "title": "SNAPRAG: Cost-Efficient Knowledge Extraction Attack on RAG Systems via Adversarial Perturbations",
+                "summary": "Retrieval-Augmented Generation (RAG) systems improve Large Language Model (LLM) responses by incorporating information from external knowledge bases. However, recent studies have shown that attackers can extract substantial portions of private knowledge bases from RAG systems through repeated querying. Yet, state-of-the-art extraction attacks either rely heavily on external LLMs to generate adversarial queries or require a large number of queries. In this paper, we propose SNAPRAG, a novel and cost-efficient attack for extracting RAG knowledge bases through adversarial perturbations. Our approach algorithmically generates adversarial queries without relying on external LLMs and allows for a strictly configurable query budget. In particular, SNAPRAG uses a discrete token-mutation algorithm to generate novel queries in a strict black-box setting. Our adaptive dissimilarity threshold calibration systematically forces queries into unexplored semantic regions of the target database, enabling extraction with fewer queries. Specifically, to extract half of the target knowledge base, our method requires up to 6.77$\\times$ fewer queries than existing approaches. Furthermore, within a fixed query budget, our method recovers up to 96.9%, outperforming the closest approach by 7.7-19.9%. We further evaluate SNAPRAG against active defenses, where it remains the leading attack on four of five defended targets, achieving 50.7-96.3% extraction rate.",
+                "authors": [
+                  "Melih Coşğun",
+                  "Mehmet Emre Gürsoy",
+                  "Alptekin Küpçü",
+                  "Sinem Sav"
+                ],
+                "published": "2026-11-09T11:30:44Z",
+                "updated": "2026-11-09T11:30:44Z",
+                "url": "http://arxiv.org/abs/2611.12241v1",
+                "pdf_url": "https://arxiv.org/pdf/2611.12241v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.CR",
+                "categories": [
+                  "cs.CR"
+                ]
+              },
+              {
+                "arxiv_id": "2611.12155v1",
+                "title": "StealthyPoison: Manipulating LLM Agent Behavior through Procedural Poisoning of Third-Party Skills",
+                "summary": "LLM agents increasingly retrieve third-party skills from public registries and follow their procedures to complete user tasks. This reliance allows attackers to manipulate agent behavior by poisoning the skills. However, overtly malicious instructions can provide explicit signals for detection. We present StealthyPoison, a stealthy procedural poisoning attack that corrupts a skill's decision-critical rules to induce incorrect task outcomes while preserving its advertised functionality and normal execution. Unlike prior knowledge corruption attacks that craft poisoned content for known target question-answer pairs, StealthyPoison constructs reusable poisoned procedures from a publicly available third-party skill, without access to actual user requests or their ground-truth answers. To make the poisoned procedure generalize to unseen requests, it first synthesizes requests from the target skill and executes its clean version using a surrogate agent to obtain pseudo-references. These references and surrogate execution feedback guide the iterative refinement of payloads that alter decision-critical rules. To increase the likelihood that the poisoned skill is retrieved and selected over benign alternatives, the attack augments the poisoned skill's retrieval metadata with independently generated request descriptions. We evaluate StealthyPoison on 566 eligible target skills and 5,244 requests against more than 26,000 registry entries. It improves top-1 poisoned-skill placement by 13.6% relative to both HotFlip and GCG. Constructed using feedback from a single surrogate model, the procedural poisoning payloads transfer effectively and without modification to three held-out victim models and achieve end-to-end attack success in a Claude Code workflow powered by Opus 4.8. The defense evaluation further shows that most of these payloads evade detection by both SkillSpector and GPT-5.4-mini.",
+                "authors": [
+                  "Jingfen Qiao",
+                  "Rui Li",
+                  "Shuaiqun Pan",
+                  "Olga Gadyatskaya",
+                  "Andrew Yates",
+                  "Evangelos Kanoulas"
+                ],
+                "published": "2026-11-09T10:05:07Z",
+                "updated": "2026-11-09T10:05:07Z",
+                "url": "http://arxiv.org/abs/2611.12155v1",
+                "pdf_url": "https://arxiv.org/pdf/2611.12155v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.CR",
+                "categories": [
+                  "cs.CR"
+                ]
+              }
+            ],
+            "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+          }
+        }
+      ],
+      "provider_used": "openrouter",
+      "ended_at": "2026-11-10T15:22:36"
+    }
+  ]
+}

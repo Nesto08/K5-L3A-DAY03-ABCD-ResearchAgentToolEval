@@ -6,9 +6,9 @@
 
 ## Team
 
-- Team:
-- Members:
-- Provider/model:
+- Team: <!-- ABCD -->
+- Members: <!-- Dũng, Duy, Đức, Khương -->
+- Provider/model: OpenRouter, `openai/gpt-4o-mini`
 
 ---
 
@@ -16,33 +16,46 @@
 
 ## A1. Agent này làm được gì
 
-> 1–2 câu mô tả agent dùng để làm gì (cho team khác hiểu nhanh).
-
-**Sherlock** là agent hỗ trợ research và tìm kiếm thông tin: tìm tin trên web, xem tweet theo tài khoản hoặc theo chủ đề, đọc và tóm tắt URL, tìm và đọc paper arXiv, tra policy nội bộ công ty. Sherlock tổng hợp kết quả thành bản tin có nguồn và chỉ gửi lên Telegram khi người dùng đã xác nhận.
+**Sherlock** là agent hỗ trợ research và tìm kiếm thông tin: tìm tin trên web, xem tweet theo tài khoản hoặc theo chủ đề, đọc và tóm tắt URL, tìm và đọc paper arXiv, tra policy nội bộ công ty. Sherlock tổng hợp kết quả thành bản tin có nguồn và chỉ gửi lên Telegram khi người dùng đã xác nhận. Ngoài ra Sherlock xem được thời tiết, ngày giờ, và nhớ hồ sơ người dùng (thành phố, chủ đề quan tâm) để cá nhân hóa câu trả lời.
 
 **Link dùng thử (deploy):**
 
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README. Nếu deploy Vercel/Streamlit Cloud thì dán link đó.
->
-> URL: 
+> URL: <!-- TODO: dán link trycloudflare.com khi chạy tunnel -->
 
 ## A2. Tool agent có
 
-> Liệt kê các tool agent đang dùng (gồm tool mới nhóm tự thêm). Mỗi tool 1 dòng: tên + làm được gì.
+15 tool: 6 tool lõi, 4 tool bonus có sẵn, 4 tool nhóm tự viết.
 
 | Tên tool | Làm được gì | Tool mới nhóm thêm? |
 |---|---|---|
-| clarify | hỏi lại người dùng khi thiếu thông tin | không |
-|  |  |  |
-|  |  |  |
+| clarify | Hỏi lại người dùng một câu khi thiếu thông tin, hoặc xin xác nhận trước khi gửi Telegram | không |
+| timeline | Lấy các tweet gần nhất của một tài khoản X cụ thể | không |
+| social_search | Tìm tweet theo chủ đề hoặc từ khóa, từ nhiều tài khoản | không |
+| lookup | Tìm kiếm web (tin tức, thông tin công khai), trả về link và tóm tắt | không |
+| fetch | Đọc nội dung một URL người dùng đưa | không |
+| format | Trình bày kết quả đã thu thập thành bản tin markdown (brief, bullets, thread, ...) | không |
+| send | Đăng văn bản lên kênh Telegram, chỉ chạy khi người dùng đã đồng ý | không |
+| policy | Tra policy nội bộ công ty, trả về đoạn quy định kèm nguồn và ngày hiệu lực | không |
+| papers | Tìm paper trên arXiv theo chủ đề | không |
+| paper_text | Tải PDF một paper arXiv và trích text vài trang đầu | không |
+| **profile** | Đọc hồ sơ người dùng: tên gọi, thành phố, múi giờ, chủ đề quan tâm, tài khoản hay theo dõi | **có** |
+| **profile_save** | Lưu hoặc sửa một trường trong hồ sơ, chỉ khi người dùng muốn lưu | **có** |
+| **weather** | Thời tiết hiện tại và dự báo 1–7 ngày cho một thành phố | **có** |
+| **now** | Ngày giờ hiện tại theo múi giờ người dùng hoặc múi giờ khác | **có** |
 
 ## A3. Câu hỏi mẫu để thử
 
-> 3–5 câu hỏi/yêu cầu mẫu để team khác tự thử agent ngay.
+Các câu dưới đây đã chạy thật với prompt và tools v2 (`v2+p34f5ac3322b4+t5a5f849734c9`), mỗi câu có transcript trong `transcripts/`.
 
-1.
-2.
-3.
+| # | Câu hỏi | Sherlock gọi | Transcript |
+|---|---|---|---|
+| 1 | Tin tức AI hôm nay có gì nổi bật? Làm thành bản tin ngắn giúp mình. | `lookup` (topic=news, timeframe=day) rồi `format` | `v2_openrouter_20261110T152139783280` |
+| 2 | Tìm 3 paper arXiv về đánh giá retrieval augmented generation | `papers` (max_results=3) | `v2_openrouter_20261110T152306703336` |
+| 3 | Thời tiết Đà Nẵng cuối tuần này thế nào, có mưa không? | `weather` (days=7) | `v2_openrouter_20261110T152237158923` |
+| 4 | Theo policy công ty, tweet viral có được dùng làm nguồn trích dẫn không? | `policy` (policy_area=source_citation) | `v2_openrouter_20261110T152247602955` |
+| 5 | Hôm nay thứ mấy, ngày bao nhiêu? Bây giờ ở Tokyo mấy giờ? | `now` hai lần (múi giờ mặc định, rồi Asia/Tokyo) | `v2_openrouter_20261110T152323804459` |
+
+Thử thêm guardrail: gõ "Đăng bản tin này lên Telegram". Sherlock phải hỏi lại để xác nhận (`clarify`, yes_no) trước khi gọi `send`.
 
 ---
 
