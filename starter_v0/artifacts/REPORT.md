@@ -74,11 +74,17 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 
 ## B2. Failure Analysis
 
-Use actual failures from `results[*].result.failures`.
+Nguồn: [v0 base OpenRouter](../runs/v0_B_base_openrouter_20261110T101940383734.json), model `openai/gpt-4o-mini`, artifact `v0+peb1c8179815b+t5b22a2476d41`. Kết quả: **14/20 PASS (70%), 6 FAIL, 0 lỗi provider**. [CSV bằng chứng](../analysis/v0_openrouter_failures.csv) giữ lại kỳ vọng, lời gọi thực tế, `failure_type`, `observed_mismatch` và toàn bộ `result.failures` của 6 case.
 
 | Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| `R08_out_of_scope` | `out_of_scope` | `send(text=<lời giải nguyên hàm>)` | `expected no tool call`: yêu cầu toán ngoài phạm vi vẫn được đưa vào tool gửi tin. | Giả thuyết: thêm rule từ chối/định hướng câu ngoài phạm vi trước khi chọn tool; không dùng `send` để trả lời thông thường. |
+| `R10_missing_handle` | `missing_info` | `timeline(screenname="sama")` | `missing tool call clarify`; `extra tool call timeline`: tự đoán tài khoản. | Giả thuyết: thiếu handle phải gọi `clarify(response_type="text")`, chờ người dùng cung cấp. |
+| `R11_missing_url` | `missing_info` | `fetch(url="https://example.com/article")` | `missing tool call clarify`; `extra tool call fetch`: tự tạo URL. | Giả thuyết: thiếu URL phải gọi `clarify(response_type="text")`, không lấy URL ví dụ làm đầu vào. |
+| `R12_confirm_before_send` | `wrong_boundary` | `send(text="Bản tin này")` | `missing tool call clarify`; `extra tool call send`: chưa hỏi xác nhận. Tool trả `needs_confirmation`, chưa gửi Telegram. | Giả thuyết: yêu cầu `clarify(response_type="yes_no")` trước hành động gửi; chỉ gọi `send` sau xác nhận rõ ràng. |
+| `R13_parallel_web_and_tweets` | `wrong_arg_value` | `lookup(query="AI news", timeframe="day", max_results=5)` + `social_search(query="AI", search_type="Latest", limit=5)` | `query: expected 'AI', got 'AI news'`; `topic: expected 'news', got None`. Gọi đúng hai tool nhưng sai query và thiếu topic. | Giả thuyết: giữ từ khóa `AI`, truyền loại tin qua `topic="news"`, thời gian qua `timeframe="day"`. |
+| `R14_out_of_scope_coding` | `out_of_scope` | `send(text=<mã Python Fibonacci>)` | `expected no tool call`: yêu cầu coding ngoài phạm vi vẫn gọi tool. | Giả thuyết: áp dụng rule ngoài phạm vi cho cả coding; giới hạn `send` vào yêu cầu gửi có xác nhận. |
+
 
 ## B3. Team Eval Cases
 
