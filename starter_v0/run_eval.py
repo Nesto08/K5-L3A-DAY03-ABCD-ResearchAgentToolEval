@@ -9,7 +9,7 @@ from typing import Any
 
 from agent import ResearchAgent
 from env_loader import load_lab_env
-from providers import make_provider
+from providers import PROVIDER_NAMES, make_provider
 from tools import TOOL_FUNCTIONS, load_tool_declarations, to_openai_tools
 from versioning import artifact_version_dict, build_artifact_version
 
@@ -105,13 +105,32 @@ def normalize_value(value: Any) -> Any:
     return value
 
 
-def compare_subset(expected: dict[str, Any], actual: dict[str, Any]) -> tuple[bool, list[str], int, int]:
+def tool_arg_defaults(declarations: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Map tool name -> {arg: default} from the `default` fields in tools.yaml."""
+    defaults: dict[str, dict[str, Any]] = {}
+    for item in declarations:
+        properties = (item.get("parameters") or {}).get("properties") or {}
+        defaults[item["name"]] = {key: spec["default"] for key, spec in properties.items() if "default" in spec}
+    return defaults
+
+
+def compare_subset(
+    expected: dict[str, Any],
+    actual: dict[str, Any],
+    defaults: dict[str, Any] | None = None,
+) -> tuple[bool, list[str], int, int]:
+    """Subset-compare expected args against actual args.
+
+    An arg the model left out counts as its schema default, because the tool
+    fills that default in at runtime. Without `defaults`, a missing arg is None.
+    """
+    defaults = defaults or {}
     failures: list[str] = []
     total = 0
     correct = 0
     for key, expected_value in expected.items():
         total += 1
-        actual_value = actual.get(key)
+        actual_value = actual[key] if key in actual else defaults.get(key)
         if key == "missing_fields":
             expected_set = set(expected_value)
             actual_set = set(actual_value or [])
@@ -129,17 +148,27 @@ def compare_subset(expected: dict[str, Any], actual: dict[str, Any]) -> tuple[bo
     return len(failures) == 0, failures, correct, total
 
 
-def best_arg_match(expected_args: dict[str, Any], actual_calls: list[tuple[int, dict[str, Any]]]) -> tuple[int, list[str], int, int] | None:
+def best_arg_match(
+    expected_args: dict[str, Any],
+    actual_calls: list[tuple[int, dict[str, Any]]],
+    defaults: dict[str, Any] | None = None,
+) -> tuple[int, list[str], int, int] | None:
     best: tuple[int, list[str], int, int] | None = None
     for index, actual_call in actual_calls:
-        _, arg_failures, arg_correct, arg_total = compare_subset(expected_args, actual_call.get("args", {}))
+        _, arg_failures, arg_correct, arg_total = compare_subset(expected_args, actual_call.get("args", {}), defaults)
         candidate = (index, arg_failures, arg_correct, arg_total)
         if best is None or (arg_correct, -len(arg_failures)) > (best[2], -len(best[1])):
             best = candidate
     return best
 
 
-def evaluate_phase_b(case: dict[str, Any], tool_calls: list[dict[str, Any]], text: str | None) -> dict[str, Any]:
+def evaluate_phase_b(
+    case: dict[str, Any],
+    tool_calls: list[dict[str, Any]],
+    text: str | None,
+    arg_defaults: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    arg_defaults = arg_defaults or {}
     expect = case["expect"]
     case_failure_type = case["failure_type"]
     if expect.get("no_tool"):
@@ -176,7 +205,7 @@ def evaluate_phase_b(case: dict[str, Any], tool_calls: list[dict[str, Any]], tex
             failures.append(f"missing tool call {expected_call['name']}")
             continue
 
-        match = best_arg_match(expected_call.get("args", {}), same_name)
+        match = best_arg_match(expected_call.get("args", {}), same_name, arg_defaults.get(expected_call["name"]))
         if match is None:
             routing_correct = False
             args_correct = False
@@ -264,7 +293,7 @@ def main() -> None:
     parser.add_argument("--phase", choices=["B"], default="B")
     parser.add_argument("--suite", choices=["base", "group", "cross", "extension"], default="base", help="Run label saved to JSON; does not filter --eval-cases.")
     parser.add_argument("--version", required=True)
-    parser.add_argument("--provider", choices=["openai", "openrouter", "anthropic", "gemini", "ollama"], required=True)
+    parser.add_argument("--provider", choices=PROVIDER_NAMES, required=True)
     parser.add_argument("--model", default=None)
     parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt.md")
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
@@ -276,6 +305,8 @@ def main() -> None:
     artifact_version = build_artifact_version(args.version, args.system_prompt, args.tools)
     provider = make_provider(args.provider)
     selected_model = args.model or getattr(provider, "default_model", None)
+    if hasattr(provider, "chain"):
+        print(f"[warn] --provider {args.provider} có thể chuyển model giữa các case; để so sánh version, chọn một provider cố định.")
     dataset_info = load_dataset_info(args.eval_cases)
     cases = load_cases(args.eval_cases, args.phase)
     if not cases:
@@ -284,6 +315,7 @@ def main() -> None:
     tool_declarations = load_tool_declarations(args.tools)
     validate_expected_tools(cases, tool_declarations, args.eval_cases)
     openai_tools = to_openai_tools(tool_declarations)
+    arg_defaults = tool_arg_defaults(tool_declarations)
 
     results: list[dict[str, Any]] = []
     for case in cases:
@@ -293,7 +325,7 @@ def main() -> None:
             tool_choice = None if case["expect"].get("no_tool") else "required"
             run = agent.run(case_messages(case), tool_choice=tool_choice)
             calls = [{"name": call.name, "args": call.args} for call in run.tool_calls]
-            result = evaluate_phase_b(case, calls, run.text)
+            result = evaluate_phase_b(case, calls, run.text, arg_defaults)
             tool_results = run.tool_results
         except Exception as exc:
             calls = []

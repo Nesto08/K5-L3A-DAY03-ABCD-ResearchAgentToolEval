@@ -66,6 +66,19 @@ def test_tool_folder_has_tool_md_with_matching_name(name: str) -> None:
     assert matches, f"No tools/<folder>/TOOL.md with 'name: {name}' in its frontmatter"
 
 
+SYSTEM_PROMPT = (ROOT / "artifacts" / "system_prompt.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("name", sorted(DECLARED))
+def test_system_prompt_mentions_every_declared_tool(name: str) -> None:
+    """A tool the prompt never names has no routing rule, so the model guesses when to use it."""
+    assert f"`{name}`" in SYSTEM_PROMPT, f"artifacts/system_prompt.md never mentions `{name}`"
+
+
+def test_system_prompt_states_send_confirmation_boundary() -> None:
+    assert "confirmed=true" in SYSTEM_PROMPT, "system_prompt.md must say send only runs with confirmed=true after the user agrees"
+
+
 @pytest.mark.parametrize("eval_file", EVAL_FILES)
 def test_eval_cases_only_expect_declared_tools(eval_file: str) -> None:
     data = json.loads((ROOT / "data" / eval_file).read_text(encoding="utf-8"))

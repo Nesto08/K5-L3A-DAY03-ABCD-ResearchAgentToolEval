@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 ARTIFACTS_DIR = ROOT / "artifacts"
 
 from env_loader import load_lab_env
-from providers import make_provider
+from providers import PROVIDER_NAMES, make_provider
 from tools import load_tool_declarations, to_openai_tools
 
 
@@ -18,7 +18,7 @@ load_lab_env(ROOT)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Smoke-test live structured tool calling.")
-    parser.add_argument("--provider", choices=["openrouter", "openai", "anthropic", "gemini", "ollama"], required=True)
+    parser.add_argument("--provider", choices=PROVIDER_NAMES, required=True)
     parser.add_argument("--model", default=None, help="Optional model override. Omit to use provider default from code.")
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
     args = parser.parse_args()
@@ -33,8 +33,9 @@ def main() -> None:
     if not response.tool_calls:
         raise SystemExit("Provider did not return structured tool_calls.")
     first = response.tool_calls[0]
-    selected_model = args.model or getattr(provider, "default_model", None)
-    print(f"OK provider={args.provider} model={selected_model}")
+    used = getattr(provider, "last_provider", None)
+    selected_model = args.model or getattr(provider, "last_model", None) or getattr(provider, "default_model", None)
+    print(f"OK provider={args.provider}{f' -> {used}' if used else ''} model={selected_model}")
     print(f"tool={first.name}")
     print(f"args={first.args}")
 
