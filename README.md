@@ -58,13 +58,13 @@ Bonus:
 - [ ] `v1`, `v2`, `v3`: mỗi version **một** giả thuyết, metric trước/sau trong `version_log.csv`
 
 **Tool mới**
-- [ ] `tools/<tên>/tool.py` + `TOOL.md` (frontmatter đúng contract trong `tools/README.md`)
-- [ ] Đăng ký trong `tools/__init__.py` (`TOOL_FUNCTIONS`) và `artifacts/tools.yaml`
-- [ ] Unit test cho tool mới trong `tests/test_tools_todo.py` (≥ 3 test)
-- [ ] Ít nhất 1 eval case trong `data/eval_group.json` kiểm tra model có route tới tool mới đúng lúc
+- [x] `tools/<tên>/tool.py` + `TOOL.md` (frontmatter đúng contract trong `tools/README.md`)
+- [x] Đăng ký trong `tools/__init__.py` (`TOOL_FUNCTIONS`) và `artifacts/tools.yaml`
+- [x] Unit test cho tool mới trong `tests/test_tools_todo.py` (≥ 3 test)
+- [x] Ít nhất 1 eval case trong `data/eval_group.json` kiểm tra model có route tới tool mới đúng lúc
 
 **Testing**
-- [ ] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
+- [x] `data/eval_group.json`: case cho model (routing / args / boundary), xem Step 4
 - [ ] `tests/test_tools_todo.py`: unit test cho code của tool, xem Step 4b
 - [ ] `pytest`: 0 failed, 0 skipped
 
@@ -191,6 +191,19 @@ python chat.py --provider groq --version v0
 Khi làm theo các bước bên dưới, thay `--provider openrouter` bằng `--provider groq`.
 Key Tavily/Firecrawl/RapidAPI vẫn cấu hình riêng theo tool đang dùng.
 Chi tiết: [TOOL-SETUP.md](TOOL-SETUP.md).
+
+### Mỗi người một key: `--provider auto`
+
+Mỗi thành viên chỉ cần điền key mình có (Gemini, OpenAI, OpenRouter, Anthropic, Groq) vào `starter_v0/.env`.
+`auto` chỉ dùng provider có key và đã cài SDK, thử theo thứ tự `gemini → openai → openrouter → anthropic → groq → ollama`.
+Provider đầu lỗi hoặc hết quota thì chuyển sang provider sau. Đổi thứ tự bằng `LAB_PROVIDER_ORDER` trong `.env`.
+
+```bash
+python scripts/preflight_provider.py --provider auto   # in ra provider thật sự đã trả lời
+python chat.py --provider auto --version v1
+```
+
+Chạy eval thì nên chọn một provider cố định: `auto` có thể đổi model giữa các case, khi đó điểm không còn so sánh được giữa các version.
 
 ## Step 1 — Run Baseline
 
@@ -334,8 +347,11 @@ Try at least 3 live turns, for example:
 1. Chạy UI local trước (ví dụ Streamlit mặc định cổng `8501`):
 
    ```bash
-   streamlit run app.py            # → http://localhost:8501
+   # Trong starter_v0/, bằng Python của venv (không gọi `streamlit` trên PATH, có thể là venv khác)
+   python -m streamlit run app.py   # → http://localhost:8501
    ```
+
+   Sidebar chỉ liệt kê provider có key trong `.env`. Mục *Provider chưa dùng được* ghi rõ thiếu key hay thiếu package. Dưới mỗi câu trả lời có ghi provider và model đã trả lời.
 
 2. Cài `cloudflared`:
 
